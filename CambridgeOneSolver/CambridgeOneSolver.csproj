@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Page Include="Views\Windows\CambridgeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -114,7 +115,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\Base\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
