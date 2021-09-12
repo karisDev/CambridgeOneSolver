@@ -24,5 +24,14 @@ namespace CambridgeOneSolver
         {
             InitializeComponent();
         }
+        private void MoveWindow(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                WindowState = WindowState.Normal;
+                DragMove();
+            }
+            catch { }
+        }
     }
 }
