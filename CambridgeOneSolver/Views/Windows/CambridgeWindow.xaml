@@ -27,34 +27,7 @@
     <Window.DataContext>
         <vm:CambridgeWindowViewModel />
     </Window.DataContext>
-    <materialDesign:DrawerHost IsBottomDrawerOpen="True">
-
-        <materialDesign:DrawerHost.BottomDrawerContent>
-            <materialDesign:ColorZone Mode="Light">
-                <StackPanel
-      Margin="16"
-      HorizontalAlignment="Center"
-      Orientation="Horizontal">
-                    <TextBlock
-        Margin="4"
-        VerticalAlignment="Center"
-        Text="BOTTOM BRACKET" />
-                    <Button
-        Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-        Style="{DynamicResource MaterialDesignFlatButton}"
-        Margin="4"
-        VerticalAlignment="Center"
-        Content="CLOSE ALL" />
-                    <Button
-        Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-        CommandParameter="{x:Static Dock.Bottom}"
-        Style="{DynamicResource MaterialDesignFlatButton}"
-        Margin="4"
-        VerticalAlignment="Center"
-        Content="CLOSE THIS" />
-                </StackPanel>
-            </materialDesign:ColorZone>
-        </materialDesign:DrawerHost.BottomDrawerContent>
+    
     <Grid Margin="15,15,15,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -110,13 +83,15 @@
                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        
         <StackPanel Grid.Row="2" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
             <Button Command="{ Binding RequestAnswersCommand }"
                     Margin="5"
                     Content="Получить ответы" 
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                    materialDesign:ButtonProgressAssist.IsIndeterminate="{ Binding LoadingAnswers }"/>
-            <Button x:Name="ActivateButton"  Content="Активировать" Margin="5"  Visibility="{ Binding ActivateButtonVisibility }" />
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="{ Binding LoadingAnswers }" />
+            <Button x:Name="ActivateButton" Content="Активировать" Margin="5"  Visibility="{ Binding ActivateButtonVisibility }" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,4">
             <TextBlock Text="Контакты: " VerticalAlignment="Center"/>
@@ -128,7 +103,7 @@
             <TextBlock Text=" фу, не надо" VerticalAlignment="Center"/>
         </StackPanel>
     </Grid>
-    </materialDesign:DrawerHost>
+    
     <!--
     <materialDesign:DialogHost IsOpen="False">
         <materialDesign:DialogHost.DialogContent>

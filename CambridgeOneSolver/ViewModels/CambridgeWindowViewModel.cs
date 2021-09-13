@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using CambridgeOneSolver.Infrastructure;
 using CambridgeOneSolver.Infrastructure.Commands;
 using CambridgeOneSolver.Models;
 using CambridgeOneSolver.ViewModels.Base;
@@ -30,16 +31,15 @@ namespace CambridgeOneSolver.ViewModels
             get => _AnswerGrid;
             set => Set(ref _AnswerGrid, value);
         }
-        /*        private AnswersTable[] _AnswerGrid = { new AnswersTable()
-                {
-                    Number = 1,
-                    Value = "Test"
-                } } ;
-                public AnswersTable[] AnswerGrid
-                {
-                    get => _AnswerGrid;
-                    set => Set(ref _AnswerGrid, value);
-                }*/
+        #endregion
+
+        #region Таблица Ответов
+        private bool _ShowLoginBar = false;
+        public bool ShowLoginBar
+        {
+            get => _ShowLoginBar;
+            set => Set(ref _ShowLoginBar, value);
+        }
         #endregion
 
         #region Загрузка ответов
@@ -69,6 +69,7 @@ namespace CambridgeOneSolver.ViewModels
         private void OnCloseApplicationCommandExecuted(object p)
         {
             Driver.Quit();
+            Constants.SaveData();
             Application.Current.Shutdown();
         }
         private bool CanCloseApplicationCommandExecute(object p) => true;
@@ -105,13 +106,6 @@ namespace CambridgeOneSolver.ViewModels
 
         #endregion
 
-        #region InitializedCommand
-        public ICommand InitializedCommand { get; }
-        private void OnInitializedCommandExecuted(object p)
-        {
-        }
-        private bool CanInitializedCommandExecute(object p) => true;
-        #endregion
         #endregion
 
         #region Функции

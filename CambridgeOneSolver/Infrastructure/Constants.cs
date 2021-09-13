@@ -1,19 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CambridgeOneSolver.Infrastructure
+﻿namespace CambridgeOneSolver.Infrastructure
 {
     class Constants
     {
         public static string Email;
         public static string Password;
         public static bool IsThemeDark = false;
-        public static void Initialize()
+        public static void InitializeData()
         {
-
+            Email = Properties.Settings.Default.Email;
+            Password = Properties.Settings.Default.Password;
+            IsThemeDark = Properties.Settings.Default.IsThemeDark;
+        }
+        public static void SaveData()
+        {
+            Properties.Settings.Default.Email = Email;
+            Properties.Settings.Default.Password = Password;
+            Properties.Settings.Default.IsThemeDark = IsThemeDark;
+            Properties.Settings.Default.Save();
         }
     }
 }

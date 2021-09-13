@@ -56,27 +56,60 @@ namespace CambridgeOneSolver.Models
             driver.SwitchTo().DefaultContent();
             return "";
         }
+
+        internal static async Task LoginAsync()
+        {
+            await WaitElementLoad("//*[@id=\"gigya-loginID-56269462240752180\"]");
+            driver.FindElementById("gigya-loginID-56269462240752180").SendKeys(Constants.Email);
+            driver.FindElementById("gigya-password-56383998600152700").SendKeys(Constants.Password);
+            driver.FindElementByXPath("//input[@value=\"Log in\"]").Click();
+        }
+
+        private static async Task WaitElementLoad(string xpath)
+        {
+            while (!ElementCheck(xpath))
+            {
+                await Task.Delay(100);
+            }
+        }
+
+        private static bool ElementCheck(string xpath)
+        {
+            try
+            {
+                driver.FindElementByXPath(xpath);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static async Task ListenLoginAsync()
         {
             string url = "https://www.cambridgeone.org/login";
             while (true)
             {
-                while (driver.Url == url)
-                {
-                    try
-                    {
-                        Constants.Email = driver.FindElementByXPath("//input[@id=\"gigya-loginID-56269462240752180\"]").GetAttribute("value");
-                        Constants.Password = driver.FindElementByXPath("//input[@id=\"gigya-password-56383998600152700\"]").GetAttribute("value");
-                        await Task.Delay(400);
-                    }
-                    catch
-                    {
-                        await Task.Delay(400);
-                    }
-                }
-                
-                MessageBox.Show(Constants.Email + ", " + Constants.Password);
+                if (driver.Url == url) await LoginPageDetectedAsync();
                 await Task.Delay(10000);
+            }
+        }
+        public static async Task LoginPageDetectedAsync()
+        {
+            string url = "https://www.cambridgeone.org/login";
+            while (driver.Url == url)
+            {
+                try
+                {
+                    Constants.Email = driver.FindElementByXPath("//input[@id=\"gigya-loginID-56269462240752180\"]").GetAttribute("value");
+                    Constants.Password = driver.FindElementByXPath("//input[@id=\"gigya-password-56383998600152700\"]").GetAttribute("value");
+                    await Task.Delay(400);
+                }
+                catch
+                {
+                    await Task.Delay(400);
+                }
             }
         }
     }
