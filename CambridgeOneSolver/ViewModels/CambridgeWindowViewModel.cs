@@ -22,6 +22,7 @@ namespace CambridgeOneSolver.ViewModels
             set => Set(ref _Title, value);
         }
         #endregion
+
         #region Таблица Ответов
         private AnswersTable[] _AnswerGrid = { new AnswersTable()
         {
@@ -32,6 +33,24 @@ namespace CambridgeOneSolver.ViewModels
         {
             get => _AnswerGrid;
             set => Set(ref _AnswerGrid, value);
+        }
+        #endregion
+
+        #region Загрузка ответов
+        private bool _LoadingAnswers = false;
+        public bool LoadingAnswers
+        {
+            get => _LoadingAnswers;
+            set => Set(ref _LoadingAnswers, value);
+        }
+        #endregion
+
+        #region Видимость кнопки "Активировать"
+        private Visibility _ActivateButtonVisibility = Visibility.Collapsed;
+        public Visibility ActivateButtonVisibility
+        {
+            get => _ActivateButtonVisibility;
+            set => Set(ref _ActivateButtonVisibility, value);
         }
         #endregion
         #endregion
@@ -57,12 +76,27 @@ namespace CambridgeOneSolver.ViewModels
         }
         private bool CanMinimizeApplicationCommandExecute(object p) => true;
         #endregion
+
+        #region RequestAnswersCommand
+
         public ICommand RequestAnswersCommand { get; }
         private void OnRequestAnswersCommandExecuted(object p)
         {
-            Driver.GetDataLink();
+            LoadingAnswers = true;
+            string DataLink = Driver.GetDataLink();
+            if (DataLink == "")
+            {
+                ErrorMessages.NoDataURL();
+            }
+            else
+            {
+                
+            }
+            LoadingAnswers = false;
         }
+        private bool CanRequestAnswersCommandExecute(object p) => true;
 
+        #endregion
         #endregion
 
         public CambridgeWindowViewModel()
@@ -71,6 +105,7 @@ namespace CambridgeOneSolver.ViewModels
 
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
             MinimizeApplicationCommand = new LambdaCommand(OnMinimizeApplicationCommandExecuted, CanMinimizeApplicationCommandExecute);
+            RequestAnswersCommand = new LambdaCommand(OnRequestAnswersCommandExecuted, CanRequestAnswersCommandExecute);
             #endregion
         }
     }

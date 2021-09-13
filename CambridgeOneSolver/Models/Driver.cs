@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +33,27 @@ namespace CambridgeOneSolver.Models
             driver.Quit();
         }
 
-        public static void GetDataLink()
+        public static string GetDataLink()
         {
-            throw new NotImplementedException();
+            try
+            {
+                driver.SwitchTo().Frame(driver.FindElementByTagName("iframe"));
+            }
+            catch
+            {
+                return "";
+            }
+            foreach (IWebElement i in driver.FindElementsByTagName("script"))
+            {
+                if (i.GetAttribute("src").Contains("data.js"))
+                {
+                    string result = i.GetAttribute("src");
+                    driver.SwitchTo().DefaultContent();
+                    return result;
+                }
+            }
+            driver.SwitchTo().DefaultContent();
+            return "";
         }
     }
 }
