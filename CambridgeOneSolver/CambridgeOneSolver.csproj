@@ -75,7 +75,6 @@
     <Compile Include="Models\AnswersTable.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\ErrorMessages.cs" />
-    <Compile Include="Models\ServerRequest.cs" />
     <Compile Include="Models\ServerRequests.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Page Include="Views\Windows\CambridgeWindow.xaml">

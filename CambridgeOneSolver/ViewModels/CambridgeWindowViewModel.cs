@@ -24,16 +24,22 @@ namespace CambridgeOneSolver.ViewModels
         #endregion
 
         #region Таблица Ответов
-        private AnswersTable[] _AnswerGrid = { new AnswersTable()
-        {
-            Number = 1,
-            Value = "Test"
-        } } ;
+        private AnswersTable[] _AnswerGrid;
         public AnswersTable[] AnswerGrid
         {
             get => _AnswerGrid;
             set => Set(ref _AnswerGrid, value);
         }
+        /*        private AnswersTable[] _AnswerGrid = { new AnswersTable()
+                {
+                    Number = 1,
+                    Value = "Test"
+                } } ;
+                public AnswersTable[] AnswerGrid
+                {
+                    get => _AnswerGrid;
+                    set => Set(ref _AnswerGrid, value);
+                }*/
         #endregion
 
         #region Загрузка ответов
@@ -92,13 +98,27 @@ namespace CambridgeOneSolver.ViewModels
             {
                 
             }
+            DisplayAnswers(new string[] { "hello", "world" });
             LoadingAnswers = false;
         }
         private bool CanRequestAnswersCommandExecute(object p) => true;
 
         #endregion
         #endregion
+        public void DisplayAnswers(string[] answers)
+        {
+            if (answers.Length > 0)
+            {
+                AnswersTable[] at = new AnswersTable[answers.Length];
 
+                for (int i = 0; i < answers.Length; i++)
+                {
+                    at[i] = new AnswersTable() { Number = i + 1, Value = answers[i].Replace("\\", "") };
+                }
+                AnswerGrid = at;
+            }
+            else ErrorMessages.NoAnswersRecieved();
+        }
         public CambridgeWindowViewModel()
         {
             #region Команды
