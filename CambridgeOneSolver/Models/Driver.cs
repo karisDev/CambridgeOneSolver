@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CambridgeOneSolver.Models
 {
@@ -16,6 +17,19 @@ namespace CambridgeOneSolver.Models
             driverService.HideCommandPromptWindow = true;
 
             driver = new ChromeDriver(driverService, new ChromeOptions());
+            try
+            {
+                driver.Navigate().GoToUrl("https://www.cambridgeone.org/login");
+            }
+            catch
+            {
+                ErrorMessages.NoInternet();
+                Application.Current.Shutdown();
+            }
+        }
+        public static void Quit()
+        {
+            driver.Quit();
         }
     }
 }

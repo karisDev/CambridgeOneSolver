@@ -73,6 +73,9 @@
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="Infrastructure\Commands\LambdaCommand.cs" />
     <Compile Include="Models\Driver.cs" />
+    <Compile Include="Models\ErrorMessages.cs" />
+    <Compile Include="Models\ServerRequest.cs" />
+    <Compile Include="Models\ServerRequests.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Page Include="Views\Windows\CambridgeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

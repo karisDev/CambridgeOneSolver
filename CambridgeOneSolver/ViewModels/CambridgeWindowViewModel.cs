@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using CambridgeOneSolver.Infrastructure.Commands;
+using CambridgeOneSolver.Models;
 using CambridgeOneSolver.ViewModels.Base;
 
 namespace CambridgeOneSolver.ViewModels
 {
     class CambridgeWindowViewModel : ViewModel
     {
+        #region Переменные
         #region Заголовок окна
         private string _Title = "Cambridge One Solver";
         public string Title
@@ -19,6 +21,10 @@ namespace CambridgeOneSolver.ViewModels
             get => _Title;
             set => Set(ref _Title, value);
         }
+        #endregion
+        #region AnswersGrid
+        
+        #endregion
         #endregion
 
         #region Команды
@@ -28,11 +34,12 @@ namespace CambridgeOneSolver.ViewModels
 
         private void OnCloseApplicationCommandExecuted(object p)
         {
-            // CambridgeWindow.Driver.Quit()
+            Driver.Quit();
             Application.Current.Shutdown();
         }
         private bool CanCloseApplicationCommandExecute(object p) => true;
         #endregion
+
         #region MinimizeApplicationCommand
         public ICommand MinimizeApplicationCommand { get; }
         private void OnMinimizeApplicationCommandExecuted(object p)
@@ -42,6 +49,7 @@ namespace CambridgeOneSolver.ViewModels
         private bool CanMinimizeApplicationCommandExecute(object p) => true;
         #endregion
         #endregion
+
         public CambridgeWindowViewModel()
         {
             #region Команды
