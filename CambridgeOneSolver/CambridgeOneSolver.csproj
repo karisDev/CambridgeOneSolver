@@ -72,6 +72,7 @@
     </ApplicationDefinition>
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="Infrastructure\Commands\LambdaCommand.cs" />
+    <Compile Include="Models\Driver.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Page Include="Views\Windows\CambridgeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -115,9 +116,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Images\favicon-96x96.png" />
     <Resource Include="Resources\Images\ig.png" />

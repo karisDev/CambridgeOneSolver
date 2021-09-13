@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:CambridgeOneSolver"
+        xmlns:cmd="clr-namespace:CambridgeOneSolver.Infrastructure.Commands"
         xmlns:vm="clr-namespace:CambridgeOneSolver.ViewModels"
         mc:Ignorable="d"
         Title="{ Binding Title }"
