@@ -72,6 +72,7 @@
     </ApplicationDefinition>
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="Infrastructure\Commands\LambdaCommand.cs" />
+    <Compile Include="Infrastructure\Constants.cs" />
     <Compile Include="Models\AnswersTable.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\ErrorMessages.cs" />

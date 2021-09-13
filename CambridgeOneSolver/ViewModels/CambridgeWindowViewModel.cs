@@ -104,7 +104,17 @@ namespace CambridgeOneSolver.ViewModels
         private bool CanRequestAnswersCommandExecute(object p) => true;
 
         #endregion
+
+        #region InitializedCommand
+        public ICommand InitializedCommand { get; }
+        private void OnInitializedCommandExecuted(object p)
+        {
+        }
+        private bool CanInitializedCommandExecute(object p) => true;
         #endregion
+        #endregion
+
+        #region Функции
         public void DisplayAnswers(string[] answers)
         {
             if (answers.Length > 0)
@@ -119,6 +129,7 @@ namespace CambridgeOneSolver.ViewModels
             }
             else ErrorMessages.NoAnswersRecieved();
         }
+        #endregion
         public CambridgeWindowViewModel()
         {
             #region Команды

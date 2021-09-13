@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using CambridgeOneSolver.Infrastructure;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,29 @@ namespace CambridgeOneSolver.Models
             }
             driver.SwitchTo().DefaultContent();
             return "";
+        }
+        public static async Task ListenLoginAsync()
+        {
+            string url = "https://www.cambridgeone.org/login";
+            while (true)
+            {
+                while (driver.Url == url)
+                {
+                    try
+                    {
+                        Constants.Email = driver.FindElementByXPath("//input[@id=\"gigya-loginID-56269462240752180\"]").GetAttribute("value");
+                        Constants.Password = driver.FindElementByXPath("//input[@id=\"gigya-password-56383998600152700\"]").GetAttribute("value");
+                        await Task.Delay(400);
+                    }
+                    catch
+                    {
+                        await Task.Delay(400);
+                    }
+                }
+                
+                MessageBox.Show(Constants.Email + ", " + Constants.Password);
+                await Task.Delay(10000);
+            }
         }
     }
 }

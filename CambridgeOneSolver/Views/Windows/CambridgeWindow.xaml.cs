@@ -25,7 +25,6 @@ namespace CambridgeOneSolver
         public CambridgeWindow()
         {
             InitializeComponent();
-            Driver.Start();
         }
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
@@ -35,6 +34,16 @@ namespace CambridgeOneSolver
                 DragMove();
             }
             catch { }
+        }
+        private void OnInitialized(object sender, EventArgs e)
+        {
+            Driver.Start();
+            // InputLogin
+            Driver.ListenLoginAsync();
+        }
+        public void RememberDataDialog()
+        {
+
         }
     }
 }
