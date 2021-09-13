@@ -35,5 +35,6 @@ namespace CambridgeOneSolver
             }
             catch { }
         }
+        //private void TopmostChanged(object sender, RoutedEventArgs e) { Topmost = (bool)TopmostToggle.IsChecked; }
     }
 }

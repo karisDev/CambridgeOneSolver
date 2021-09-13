@@ -31,5 +31,10 @@ namespace CambridgeOneSolver.Models
         {
             driver.Quit();
         }
+
+        public static void GetDataLink()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

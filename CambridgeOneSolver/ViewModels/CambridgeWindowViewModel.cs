@@ -22,8 +22,17 @@ namespace CambridgeOneSolver.ViewModels
             set => Set(ref _Title, value);
         }
         #endregion
-        #region AnswersGrid
-        
+        #region Таблица Ответов
+        private AnswersTable[] _AnswerGrid = { new AnswersTable()
+        {
+            Number = 1,
+            Value = "Test"
+        } } ;
+        public AnswersTable[] AnswerGrid
+        {
+            get => _AnswerGrid;
+            set => Set(ref _AnswerGrid, value);
+        }
         #endregion
         #endregion
 
@@ -48,6 +57,12 @@ namespace CambridgeOneSolver.ViewModels
         }
         private bool CanMinimizeApplicationCommandExecute(object p) => true;
         #endregion
+        public ICommand RequestAnswersCommand { get; }
+        private void OnRequestAnswersCommandExecuted(object p)
+        {
+            Driver.GetDataLink();
+        }
+
         #endregion
 
         public CambridgeWindowViewModel()
