@@ -87,7 +87,7 @@ namespace CambridgeOneSolver.ViewModels
         #region RequestAnswersCommand
 
         public ICommand RequestAnswersCommand { get; }
-        private void OnRequestAnswersCommandExecuted(object p)
+        private async void OnRequestAnswersCommandExecuted(object p)
         {
             LoadingAnswers = true;
             string DataLink = Driver.GetDataLink();
@@ -97,9 +97,19 @@ namespace CambridgeOneSolver.ViewModels
             }
             else
             {
-                
+                try
+                {
+                    ServerRequests sr = await ServerRequests.Asnwers(DataLink, Constants.Email, Constants.Version);
+                    if (sr.DisplayMessage != " ") MessageBox.Show(sr.DisplayMessage);
+                    if (sr.Success == false) ActivateButtonVisibility = Visibility.Visible;
+                    DisplayAnswers(sr.Data);
+                }
+                catch
+                {
+                    ErrorMessages.ApiServerConnectionError();
+                }
+
             }
-            DisplayAnswers(new string[] { "hello", "world" });
             LoadingAnswers = false;
         }
         private bool CanRequestAnswersCommandExecute(object p) => true;

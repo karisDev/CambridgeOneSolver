@@ -2,6 +2,7 @@
 {
     class Constants
     {
+        public readonly static string Version = "1";
         public static string Email;
         public static string Password;
         public static bool IsThemeDark = false;
