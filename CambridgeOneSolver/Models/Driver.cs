@@ -15,10 +15,17 @@ namespace CambridgeOneSolver.Models
         public static ChromeDriver driver;
         public static void Start()
         {
-            var driverService = ChromeDriverService.CreateDefaultService();
-            driverService.HideCommandPromptWindow = true;
+            try
+            {
+                var driverService = ChromeDriverService.CreateDefaultService();
+                driverService.HideCommandPromptWindow = true;
 
-            driver = new ChromeDriver(driverService, new ChromeOptions());
+                driver = new ChromeDriver(driverService, new ChromeOptions());
+            }
+            catch
+            {
+                ErrorMessages.NoDriver();
+            }
             try
             {
                 driver.Navigate().GoToUrl("https://www.cambridgeone.org/login");
@@ -26,6 +33,7 @@ namespace CambridgeOneSolver.Models
             catch
             {
                 ErrorMessages.NoInternet();
+                Driver.Quit();
                 Application.Current.Shutdown();
             }
         }
@@ -60,8 +68,8 @@ namespace CambridgeOneSolver.Models
         internal static async Task LoginAsync()
         {
             await WaitElementLoad("//*[@id=\"gigya-loginID-56269462240752180\"]");
-            driver.FindElementById("gigya-loginID-56269462240752180").SendKeys(Constants.Email);
-            driver.FindElementById("gigya-password-56383998600152700").SendKeys(Constants.Password);
+            driver.FindElementById("gigya-loginID-56269462240752180").SendKeys(AppConstants.Email);
+            driver.FindElementById("gigya-password-56383998600152700").SendKeys(AppConstants.Password);
             driver.FindElementByXPath("//input[@value=\"Log in\"]").Click();
         }
 
@@ -95,6 +103,7 @@ namespace CambridgeOneSolver.Models
                 await Task.Delay(10000);
             }
         }
+        
         public static async Task LoginPageDetectedAsync()
         {
             string url = "https://www.cambridgeone.org/login";
@@ -102,8 +111,8 @@ namespace CambridgeOneSolver.Models
             {
                 try
                 {
-                    Constants.Email = driver.FindElementByXPath("//input[@id=\"gigya-loginID-56269462240752180\"]").GetAttribute("value");
-                    Constants.Password = driver.FindElementByXPath("//input[@id=\"gigya-password-56383998600152700\"]").GetAttribute("value");
+                    AppConstants.Email = driver.FindElementByXPath("//input[@id=\"gigya-loginID-56269462240752180\"]").GetAttribute("value");
+                    AppConstants.Password = driver.FindElementByXPath("//input[@id=\"gigya-password-56383998600152700\"]").GetAttribute("value");
                     await Task.Delay(400);
                 }
                 catch

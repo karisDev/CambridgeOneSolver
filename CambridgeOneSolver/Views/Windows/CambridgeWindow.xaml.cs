@@ -43,8 +43,8 @@ namespace CambridgeOneSolver
         private async Task _OnInitializedAsync()
         {
             Driver.Start();
-            Constants.InitializeData();
-            if (Constants.Email != "")
+            AppConstants.InitializeData();
+            if (AppConstants.Email != "")
             {
                 await Driver.LoginAsync();
 

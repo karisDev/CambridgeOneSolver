@@ -9,6 +9,7 @@ using CambridgeOneSolver.Infrastructure;
 using CambridgeOneSolver.Infrastructure.Commands;
 using CambridgeOneSolver.Models;
 using CambridgeOneSolver.ViewModels.Base;
+using MaterialDesignThemes.Wpf;
 
 namespace CambridgeOneSolver.ViewModels
 {
@@ -59,6 +60,15 @@ namespace CambridgeOneSolver.ViewModels
             set => Set(ref _ActivateButtonVisibility, value);
         }
         #endregion
+
+        #region Закрепление окна
+        private bool _IsOnTop = true;
+        public bool IsOnTop
+        {
+            get => _IsOnTop;
+            set => Set(ref _IsOnTop, value);
+        }
+        #endregion
         #endregion
 
         #region Команды
@@ -69,7 +79,7 @@ namespace CambridgeOneSolver.ViewModels
         private void OnCloseApplicationCommandExecuted(object p)
         {
             Driver.Quit();
-            Constants.SaveData();
+            AppConstants.SaveData();
             Application.Current.Shutdown();
         }
         private bool CanCloseApplicationCommandExecute(object p) => true;
@@ -99,7 +109,7 @@ namespace CambridgeOneSolver.ViewModels
             {
                 try
                 {
-                    ServerRequests sr = await ServerRequests.Asnwers(DataLink, Constants.Email, Constants.Version);
+                    ServerRequests sr = await ServerRequests.Asnwers(DataLink, AppConstants.Email, AppConstants.Version);
                     if (sr.DisplayMessage != " ") MessageBox.Show(sr.DisplayMessage);
                     if (sr.Success == false) ActivateButtonVisibility = Visibility.Visible;
                     DisplayAnswers(sr.Data);
@@ -116,6 +126,32 @@ namespace CambridgeOneSolver.ViewModels
 
         #endregion
 
+        #region ChangeThemeCommand
+
+        public ICommand ChangeThemeCommand { get; }
+        private readonly PaletteHelper _paletteHelper = new PaletteHelper();
+        private void OnCangeThemeCommandExecuted(object p)
+        {
+            Infrastructure.AppConstants.IsThemeDark = !Infrastructure.AppConstants.IsThemeDark;
+            ITheme theme = _paletteHelper.GetTheme();
+            IBaseTheme baseTheme = Infrastructure.AppConstants.IsThemeDark ? new MaterialDesignDarkTheme() : (IBaseTheme)new MaterialDesignLightTheme();
+            theme.SetBaseTheme(baseTheme);
+            _paletteHelper.SetTheme(theme);
+        }
+        private bool CanCangeThemeCommandExecute(object p) => true;
+        #endregion
+
+        #region VisitBuyPageCommand
+
+        public ICommand VisitBuyPageCommand { get; }
+
+        private void OnVisitBuyPageCommandExecuted(object p)
+        {
+            IsOnTop = false;
+            System.Diagnostics.Process.Start("https://sobe.ru/na/cambridgeonesolver");
+        }
+        private bool CanVisitBuyPageCommandExecute(object p) => true;
+        #endregion
         #endregion
 
         #region Функции
@@ -141,6 +177,8 @@ namespace CambridgeOneSolver.ViewModels
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
             MinimizeApplicationCommand = new LambdaCommand(OnMinimizeApplicationCommandExecuted, CanMinimizeApplicationCommandExecute);
             RequestAnswersCommand = new LambdaCommand(OnRequestAnswersCommandExecuted, CanRequestAnswersCommandExecute);
+            ChangeThemeCommand = new LambdaCommand(OnCangeThemeCommandExecuted, CanCangeThemeCommandExecute);
+            VisitBuyPageCommand = new LambdaCommand(OnVisitBuyPageCommandExecuted, CanVisitBuyPageCommandExecute);
             #endregion
         }
     }

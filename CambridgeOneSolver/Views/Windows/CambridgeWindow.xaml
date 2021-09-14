@@ -20,7 +20,7 @@
         MinWidth="480" MinHeight="160"
         Width="800" Height="500"
         FontSize="15"
-        Topmost="{Binding IsChecked, ElementName=TopmostToggle}"
+        Topmost="{Binding IsOnTop}"
         Initialized="OnInitialized"
         WindowState="Normal"
         WindowStyle="None">
@@ -43,7 +43,7 @@
         <TextBlock FontSize="18" Text="Cambridge One Solver"  Margin="0,5,0,0" HorizontalAlignment="Center"/>
         <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" VerticalAlignment="Top">
 
-            <ToggleButton x:Name="TopmostToggle" Width="50" Style="{StaticResource MaterialDesignSwitchToggleButton}" IsChecked="True" Margin="0,0,5,0">
+            <ToggleButton IsChecked="{Binding IsOnTop}" Width="50" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="0,0,5,0">
                 <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
                     <materialDesign:PackIcon.RenderTransform>
                         <RotateTransform Angle="45" />
@@ -53,8 +53,8 @@
                     <materialDesign:PackIcon Kind="Pin" />
                 </materialDesign:ToggleButtonAssist.OnContent>
             </ToggleButton>
-            <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
-                <materialDesign:PackIcon Kind="Settings" />
+            <Button Command="{ Binding ChangeThemeCommand }" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Kind="WeatherNight" />
             </Button>
             <Button Command="{ Binding MinimizeApplicationCommand }" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
                 <materialDesign:PackIcon Kind="WindowMinimize" />
@@ -63,7 +63,8 @@
                 <materialDesign:PackIcon Kind="Close" />
             </Button>
         </StackPanel>
-        <DataGrid x:Name="AnswersGrid"
+        
+        <DataGrid MouseDoubleClick="MoveWindow"
                   Grid.Column="1" Grid.Row="1" Margin="0,5,0,0"
                   ItemsSource="{ Binding AnswerGrid }"
                   ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -91,7 +92,7 @@
                     Content="Получить ответы" 
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                     materialDesign:ButtonProgressAssist.IsIndeterminate="{ Binding LoadingAnswers }" />
-            <Button x:Name="ActivateButton" Content="Активировать" Margin="5"  Visibility="{ Binding ActivateButtonVisibility }" />
+            <Button Command="{Binding VisitBuyPageCommand}" Content="Активировать" Margin="5"  Visibility="{ Binding ActivateButtonVisibility }" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,4">
             <TextBlock Text="Контакты: " VerticalAlignment="Center"/>

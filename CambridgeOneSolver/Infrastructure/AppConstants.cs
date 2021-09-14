@@ -1,6 +1,6 @@
 ﻿namespace CambridgeOneSolver.Infrastructure
 {
-    class Constants
+    class AppConstants
     {
         public readonly static string Version = "1";
         public static string Email;
