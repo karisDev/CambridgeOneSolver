@@ -25,6 +25,8 @@ namespace CambridgeOneSolver.Models
             catch
             {
                 ErrorMessages.NoDriver();
+                Driver.Quit();
+                Application.Current.Shutdown();
             }
             try
             {
