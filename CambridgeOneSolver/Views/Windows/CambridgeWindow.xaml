@@ -3,14 +3,204 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:CambridgeOneSolver"
+        xmlns:cmd="clr-namespace:CambridgeOneSolver.Infrastructure.Commands"
         xmlns:vm="clr-namespace:CambridgeOneSolver.ViewModels"
         mc:Ignorable="d"
-        Title="{ Binding Title }" Height="450" Width="800">
+        Title="{ Binding Title }"
+        Icon="/Resources/Images/favicon-96x96.png"
+        FontFamily="/Resources/Fonts/#Google Sans"
+        MouseDown="MoveWindow"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip"
+        AllowsTransparency="True"    
+        Foreground="{DynamicResource MaterialDesignDarkForeground}"
+        Background="Transparent"
+        MinWidth="480" MinHeight="160"
+        Width="800" Height="500"
+        FontSize="15"
+        Topmost="{Binding IsOnTop}"
+        Initialized="OnInitialized"
+        WindowState="Normal"
+        WindowStyle="None">
     <Window.DataContext>
         <vm:CambridgeWindowViewModel />
     </Window.DataContext>
-    <Grid>
+    
+    <Grid Margin="15,15,15,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="29" />
+        </Grid.RowDefinitions>
+        <Border Grid.RowSpan="10" Grid.ColumnSpan="10" Background="{DynamicResource MaterialDesignDarkBackground}"
+                    Margin="-15,-15,-15,0" CornerRadius="4"/>
+        <TextBlock FontSize="18" Text="Cambridge One Solver"  Margin="0,5,0,0" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" VerticalAlignment="Top">
+
+            <ToggleButton IsChecked="{Binding IsOnTop}" Width="50" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="0,0,5,0">
+                <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
+                    <materialDesign:PackIcon.RenderTransform>
+                        <RotateTransform Angle="45" />
+                    </materialDesign:PackIcon.RenderTransform>
+                </materialDesign:PackIcon>
+                <materialDesign:ToggleButtonAssist.OnContent>
+                    <materialDesign:PackIcon Kind="Pin" />
+                </materialDesign:ToggleButtonAssist.OnContent>
+            </ToggleButton>
+            <Button Command="{ Binding ChangeThemeCommand }" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Kind="WeatherNight" />
+            </Button>
+            <Button Command="{ Binding MinimizeApplicationCommand }" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Kind="WindowMinimize" />
+            </Button>
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Command="{ Binding CloseApplicationCommand }" Width="50">
+                <materialDesign:PackIcon Kind="Close" />
+            </Button>
+        </StackPanel>
         
+        <DataGrid MouseDoubleClick="MoveWindow"
+                  Grid.Column="1" Grid.Row="1" Margin="0,5,0,0"
+                  ItemsSource="{ Binding AnswerGrid }"
+                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                  IsReadOnly="False" CanUserAddRows="False"  CanUserReorderColumns="False" CanUserSortColumns="False"
+                  SelectionUnit="Cell" SelectionMode="Single" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Номер" Binding="{ Binding Number }"
+      EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <materialDesign:DataGridTextColumn Header="Ответ (его можно выделить)" Binding="{Binding Value}" Width="*"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        
+        <StackPanel Grid.Row="2" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
+            <Button Command="{ Binding RequestAnswersCommand }"
+                    Margin="5"
+                    Content="Получить ответы" 
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="{ Binding LoadingAnswers }" />
+            <Button Command="{Binding VisitBuyPageCommand}" Content="Активировать" Margin="5"  Visibility="{ Binding ActivateButtonVisibility }" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,4">
+            <TextBlock Text="Контакты: " VerticalAlignment="Center"/>
+            <Image Source="/Resources/Images/vk.png" Width="20"/>
+            <TextBlock Text=" @CambridgeOneSolver " VerticalAlignment="Center" />
+            <Image Source="/Resources/Images/telegram.png" Width="20" />
+            <TextBlock Text=" @CambridgeOneSolver " VerticalAlignment="Center"/>
+            <Image Source="/Resources/Images/ig.png" Width="20" />
+            <TextBlock Text=" фу, не надо" VerticalAlignment="Center"/>
+        </StackPanel>
     </Grid>
+    
+    <!--
+    <materialDesign:DialogHost IsOpen="False">
+        <materialDesign:DialogHost.DialogContent>
+            <StackPanel Margin="10">
+                <Button Click="ChangeThemeButton" Width="50" Style="{StaticResource MaterialDesignFlatButton}" >
+                    <materialDesign:PackIcon Kind="WeatherNight" />
+                </Button>
+                <Separator />
+                <TextBlock Text="Авто-вход" HorizontalAlignment="Center" FontSize="16" />
+                <TextBlock Text="(данные хранятся локально)" HorizontalAlignment="Center" FontSize="12" Foreground="DarkGray"/>
+
+                <TextBox x:Name="EmailBox" Margin="0,5,0,0" materialDesign:HintAssist.Hint="Почта" FontSize="14" />
+                <PasswordBox x:Name="PasswordBox" Margin="0,2,0,5" materialDesign:HintAssist.Hint="Пароль" FontSize="14" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                            Click="LoginDataButton"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
+                            HorizontalAlignment="Center" Content="Ок" FontSize="15" />
+                    <Button
+          Style="{StaticResource MaterialDesignFlatButton}"
+          IsCancel="True"
+          Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+          HorizontalAlignment="Center"
+          Content="Отмена" FontSize="15"/>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:DialogHost.DialogContent>
+
+        <Grid Margin="15,15,15,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="29" />
+            </Grid.RowDefinitions>
+            <Border Grid.RowSpan="10" Grid.ColumnSpan="10" Background="{DynamicResource MaterialDesignDarkBackground}"
+                    Margin="-15,-15,-15,0" CornerRadius="4"/>
+
+            <TextBlock FontSize="18" Text="Cambridge One Solver"  Margin="0,5,0,0" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" VerticalAlignment="Top">
+
+                <ToggleButton x:Name="TopmostToggle" Width="50" Style="{StaticResource MaterialDesignSwitchToggleButton}" ToggleButton.Checked="TopmostChanged" ToggleButton.Unchecked="TopmostChanged" IsChecked="True" Margin="0,0,5,0">
+                    <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
+                        <materialDesign:PackIcon.RenderTransform>
+                            <RotateTransform Angle="45" />
+                        </materialDesign:PackIcon.RenderTransform>
+                    </materialDesign:PackIcon>
+                    <materialDesign:ToggleButtonAssist.OnContent>
+                        <materialDesign:PackIcon Kind="Pin" />
+                    </materialDesign:ToggleButtonAssist.OnContent>
+                </ToggleButton>
+                <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon Kind="Settings" />
+                </Button>
+                <Button Click="Minimize" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon Kind="WindowMinimize" />
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Click="Close" Width="50">
+                    <materialDesign:PackIcon Kind="Close" />
+                </Button>
+            </StackPanel>
+            <DataGrid x:Name="AnswerGrid" Grid.Column="1" Grid.Row="1" Margin="0,5,0,0" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      CanUserAddRows="False" AutoGenerateColumns="False" CanUserReorderColumns="False" IsReadOnly="False" CanUserSortColumns="False"
+                      SelectionUnit="Cell" SelectionMode="Single">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Номер" Binding="{Binding Number}"
+      EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <materialDesign:DataGridTextColumn Header="Ответ (его можно выделить)" Binding="{Binding Value}" Width="*"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Grid.Row="2" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
+                <Button x:Name="GetAnswersButton" Content="Получить ответы" Click="GetAnswers" Margin="5" 
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True" />
+                <Button x:Name="ActivateButton" Content="Активировать" Margin="5" Click="ActivateKeyButton" Visibility="Collapsed" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,4">
+                <TextBlock Text="Контакты: " VerticalAlignment="Center"/>
+                <Image Source="/Resources/Images/vk.png" Width="20"/>
+                <TextBlock Text=" @CambridgeOneSolver " VerticalAlignment="Center" />
+                <Image Source="/Resources/Images/telegram.png" Width="20" />
+                <TextBlock Text=" @CambridgeOneSolver " VerticalAlignment="Center"/>
+                <Image Source="/Resources/Images/ig.png" Width="20" />
+                <TextBlock Text=" фу, не надо" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+    </materialDesign:DialogHost>-->
 </Window>
