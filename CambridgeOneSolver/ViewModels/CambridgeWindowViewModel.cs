@@ -169,8 +169,6 @@ namespace CambridgeOneSolver.ViewModels
             }
             else ErrorMessages.NoAnswersRecieved();
         }
-
-
         #endregion
         public CambridgeWindowViewModel()
         {

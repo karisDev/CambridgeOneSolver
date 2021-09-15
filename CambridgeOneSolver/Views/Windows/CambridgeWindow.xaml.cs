@@ -49,15 +49,10 @@ namespace CambridgeOneSolver
                 await Driver.LoginAsync();
 
             }
+            // InputLogin
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             Driver.ListenLoginAsync();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        }
-        public void ClosingApplicationCommand(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Driver.Quit();
-            AppConstants.SaveData();
-            Application.Current.Shutdown();
         }
     }
 }
