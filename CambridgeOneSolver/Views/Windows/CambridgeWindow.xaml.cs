@@ -23,10 +23,8 @@ namespace CambridgeOneSolver
     /// </summary>
     public partial class CambridgeWindow : Window
     {
-        public CambridgeWindow()
-        {
-            InitializeComponent();
-        }
+        public CambridgeWindow() => InitializeComponent();
+        
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
             try
@@ -36,11 +34,9 @@ namespace CambridgeOneSolver
             }
             catch { }
         }
-        private void OnInitialized(object sender, EventArgs e)
-        {
-            _OnInitializedAsync();
-        }
-        private async Task _OnInitializedAsync()
+        private void OnInitialized(object sender, EventArgs e) => OnInitializedAsync();
+        
+        private async Task OnInitializedAsync()
         {
             Driver.Start();
             AppConstants.InitializeData();
@@ -49,10 +45,15 @@ namespace CambridgeOneSolver
                 await Driver.LoginAsync();
 
             }
-            // InputLogin
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             Driver.ListenLoginAsync();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
+        private void OnClosed(object sender, EventArgs e)
+        {
+            Driver.Quit();
+            AppConstants.SaveData();
+            Application.Current.Shutdown();
+        }
+
+        private void Close(object sender, RoutedEventArgs e) => Close();
     }
 }
