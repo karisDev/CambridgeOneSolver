@@ -130,7 +130,7 @@ namespace CambridgeOneSolver.ViewModels
 
         public ICommand ChangeThemeCommand { get; }
         private readonly PaletteHelper _paletteHelper = new PaletteHelper();
-        private void OnCangeThemeCommandExecuted(object p)
+        private void OnChangeThemeCommandExecuted(object p)
         {
             Infrastructure.AppConstants.IsThemeDark = !Infrastructure.AppConstants.IsThemeDark;
             ITheme theme = _paletteHelper.GetTheme();
@@ -138,7 +138,7 @@ namespace CambridgeOneSolver.ViewModels
             theme.SetBaseTheme(baseTheme);
             _paletteHelper.SetTheme(theme);
         }
-        private bool CanCangeThemeCommandExecute(object p) => true;
+        private bool CanChangeThemeCommandExecute(object p) => true;
         #endregion
 
         #region VisitBuyPageCommand
@@ -177,7 +177,7 @@ namespace CambridgeOneSolver.ViewModels
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
             MinimizeApplicationCommand = new LambdaCommand(OnMinimizeApplicationCommandExecuted, CanMinimizeApplicationCommandExecute);
             RequestAnswersCommand = new LambdaCommand(OnRequestAnswersCommandExecuted, CanRequestAnswersCommandExecute);
-            ChangeThemeCommand = new LambdaCommand(OnCangeThemeCommandExecuted, CanCangeThemeCommandExecute);
+            ChangeThemeCommand = new LambdaCommand(OnChangeThemeCommandExecuted, CanChangeThemeCommandExecute);
             VisitBuyPageCommand = new LambdaCommand(OnVisitBuyPageCommandExecuted, CanVisitBuyPageCommandExecute);
             #endregion
         }

@@ -18,12 +18,12 @@ using CambridgeOneSolver.Infrastructure;
 
 namespace CambridgeOneSolver
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class CambridgeWindow : Window
     {
-        public CambridgeWindow() => InitializeComponent();
+        public CambridgeWindow()
+        {
+            InitializeComponent();
+        }
         
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
@@ -34,8 +34,16 @@ namespace CambridgeOneSolver
             }
             catch { }
         }
-        private void OnInitialized(object sender, EventArgs e) => OnInitializedAsync();
-        
+        private void OnInitialized(object sender, EventArgs e) 
+        {
+            OnInitializedAsync();
+            CambridgeWindowViewModel vm = this.DataContext as CambridgeWindowViewModel;
+
+            //Call command from viewmodel     
+            if ((vm != null) && (vm.ChangeThemeCommand.CanExecute(null)))
+                vm.ChangeThemeCommand.Execute(null);
+        }
+
         private async Task OnInitializedAsync()
         {
             Driver.Start();

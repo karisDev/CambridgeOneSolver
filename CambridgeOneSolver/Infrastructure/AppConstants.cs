@@ -10,7 +10,7 @@
         {
             Email = Properties.Settings.Default.Email;
             Password = Properties.Settings.Default.Password;
-            IsThemeDark = Properties.Settings.Default.IsThemeDark;
+            IsThemeDark = !Properties.Settings.Default.IsThemeDark;
         }
         public static void SaveData()
         {
