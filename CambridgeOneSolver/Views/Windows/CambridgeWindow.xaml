@@ -20,6 +20,7 @@
         MinWidth="480" MinHeight="160"
         Width="800" Height="500"
         FontSize="15"
+        Closing="ClosingApplicationCommand"
         Topmost="{Binding IsOnTop}"
         Initialized="OnInitialized"
         WindowState="Normal"
