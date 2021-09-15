@@ -71,7 +71,7 @@
                   IsReadOnly="False" CanUserAddRows="False"  CanUserReorderColumns="False" CanUserSortColumns="False"
                   SelectionUnit="Cell" SelectionMode="Single" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Номер" Binding="{ Binding Number }"
+                <DataGridTextColumn Header="Номер" Binding="{ Binding Number }" IsReadOnly="True"
       EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
