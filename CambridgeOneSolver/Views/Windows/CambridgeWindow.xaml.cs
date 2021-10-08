@@ -10,6 +10,7 @@ namespace CambridgeOneSolver
 {
     public partial class CambridgeWindow : Window
     {
+
         public CambridgeWindow()
         {
             InitializeComponent();
@@ -41,7 +42,6 @@ namespace CambridgeOneSolver
             if (AppConstants.Email != "")
             {
                 await Driver.LoginAsync();
-
             }
             Driver.ListenLoginAsync();
         }

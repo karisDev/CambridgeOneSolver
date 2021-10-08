@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using CambridgeOneSolver.Infrastructure;
+using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 

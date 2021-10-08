@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 using CambridgeOneSolver.Infrastructure;
 using CambridgeOneSolver.Infrastructure.Commands;
@@ -26,15 +27,6 @@ namespace CambridgeOneSolver.ViewModels
         {
             get => _AnswerGrid;
             set => Set(ref _AnswerGrid, value);
-        }
-        #endregion
-
-        #region Таблица Ответов
-        private bool _ShowLoginBar = false;
-        public bool ShowLoginBar
-        {
-            get => _ShowLoginBar;
-            set => Set(ref _ShowLoginBar, value);
         }
         #endregion
 
