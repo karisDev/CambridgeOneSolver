@@ -43,7 +43,10 @@ namespace CambridgeOneSolver
             {
                 await Driver.LoginAsync();
             }
-            Driver.ListenLoginAsync();
+            else
+            {
+                Driver.ListenLoginAsync();
+            }
         }
         private void OnClosed(object sender, EventArgs e)
         {

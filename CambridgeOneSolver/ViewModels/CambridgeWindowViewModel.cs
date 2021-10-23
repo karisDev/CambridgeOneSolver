@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using CambridgeOneSolver.Infrastructure;
@@ -82,7 +83,6 @@ namespace CambridgeOneSolver.ViewModels
         #endregion
 
         #region RequestAnswersCommand
-
         public ICommand RequestAnswersCommand { get; }
         private async void OnRequestAnswersCommandExecuted(object p)
         {
@@ -99,7 +99,9 @@ namespace CambridgeOneSolver.ViewModels
                     ServerRequests sr = await ServerRequests.Asnwers(DataLink, AppConstants.Email, AppConstants.Version);
                     if (sr.DisplayMessage != " ") MessageBox.Show(sr.DisplayMessage);
                     if (sr.Success == false) ActivateButtonVisibility = Visibility.Visible;
+                    LatestAnswers = sr.Data;
                     DisplayAnswers(sr.Data);
+                    Driver.FillTextBlocks();
                 }
                 catch
                 {
@@ -156,6 +158,10 @@ namespace CambridgeOneSolver.ViewModels
             }
             else ErrorMessages.NoAnswersRecieved();
         }
+        #endregion
+
+        #region Кэш
+        public static string[] LatestAnswers { get; set; }
         #endregion
         public CambridgeWindowViewModel()
         {
