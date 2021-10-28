@@ -101,7 +101,7 @@ namespace CambridgeOneSolver.ViewModels
                     if (sr.Success == false) ActivateButtonVisibility = Visibility.Visible;
                     LatestAnswers = sr.Data;
                     DisplayAnswers(sr.Data);
-                    Driver.FillTextBlocks();
+                    Driver.FillTextBlocks2();
                 }
                 catch
                 {
