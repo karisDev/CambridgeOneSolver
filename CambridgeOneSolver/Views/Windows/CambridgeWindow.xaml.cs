@@ -28,10 +28,9 @@ namespace CambridgeOneSolver
         private void OnInitialized(object sender, EventArgs e) 
         {
             OnInitializedAsync();
-            CambridgeWindowViewModel vm = this.DataContext as CambridgeWindowViewModel;
 
             //Call command from viewmodel     
-            if ((vm != null) && (vm.ChangeThemeCommand.CanExecute(null)))
+            if ((this.DataContext is CambridgeWindowViewModel vm) && (vm.ChangeThemeCommand.CanExecute(null)))
                 vm.ChangeThemeCommand.Execute(null);
         }
 
@@ -55,5 +54,21 @@ namespace CambridgeOneSolver
         }
 
         private void Close(object sender, RoutedEventArgs e) => Close();
+
+        private void ExpanderRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            SettingsExpander.Visibility = (bool)ExpanderRadioButton.IsChecked ?
+                    Visibility.Visible : Visibility.Collapsed;
+            SettingsExpander.IsExpanded = (bool)ExpanderRadioButton.IsChecked;
+            SettingsExpander.IsEnabled = (bool)ExpanderRadioButton.IsChecked;
+            ExpanderButtonIcon.Kind = (bool)ExpanderRadioButton.IsChecked ?
+                MaterialDesignThemes.Wpf.PackIconKind.ChevronDown : MaterialDesignThemes.Wpf.PackIconKind.ChevronUp;
+
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+        }
     }
 }
