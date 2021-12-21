@@ -54,21 +54,5 @@ namespace CambridgeOneSolver
         }
 
         private void Close(object sender, RoutedEventArgs e) => Close();
-
-        private void ExpanderRadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            SettingsExpander.Visibility = (bool)ExpanderRadioButton.IsChecked ?
-                    Visibility.Visible : Visibility.Collapsed;
-            SettingsExpander.IsExpanded = (bool)ExpanderRadioButton.IsChecked;
-            SettingsExpander.IsEnabled = (bool)ExpanderRadioButton.IsChecked;
-            ExpanderButtonIcon.Kind = (bool)ExpanderRadioButton.IsChecked ?
-                MaterialDesignThemes.Wpf.PackIconKind.ChevronDown : MaterialDesignThemes.Wpf.PackIconKind.ChevronUp;
-
-        }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-
-        }
     }
 }
