@@ -66,12 +66,15 @@ namespace CambridgeOneSolver.ViewModels
 
         #region Размер шрифта
 
-        private int _AnswersFontSize = 13;
+        private int _AnswersFontSize = AppConstants.AnswersFontSize;
         public int AnswersFontSize
         {
             get => _AnswersFontSize;
-            set => Set(ref _AnswersFontSize, value);
-            
+            set
+            {
+                Set(ref _AnswersFontSize, value);
+                AppConstants.AnswersFontSize = _AnswersFontSize;
+            }
         }
 
         #endregion

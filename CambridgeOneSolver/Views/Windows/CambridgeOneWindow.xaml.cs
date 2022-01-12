@@ -23,25 +23,30 @@ namespace CambridgeOneSolver.Views.Windows
         {
             try
             {
-                WindowState = WindowState.Normal;
+                if (WindowState == WindowState.Maximized)
+                {
+                    WindowState = WindowState.Normal;
+                    var point = System.Windows.Forms.Control.MousePosition;
+                    Left = point.X - (Width / 2);
+                    Top = point.Y - 10;
+                }
+
                 DragMove();
             }
             catch { }
         }
         private void OnInitialized(object sender, EventArgs e)
         {
-            //Thread thread = new Thread(OnInitializedAsync);
-            //thread.Start();
+            if ((this.DataContext is CambridgeWindowViewModel vm) && (vm.ChangeThemeCommand.CanExecute(null)))
+                vm.ApplyThemeColor(AppConstants.IsThemeDark);
 
-            OnInitializedAsync();
+            Thread thread = new Thread(OnInitializedAsync);
+            thread.Start();
         }
 
         private async void OnInitializedAsync()
         {
             Driver.Start();
-
-            if ((this.DataContext is CambridgeWindowViewModel vm) && (vm.ChangeThemeCommand.CanExecute(null)))
-                vm.ApplyThemeColor(AppConstants.IsThemeDark);
 
             if (AppConstants.Email != "" || AppConstants.Email == null)
             {
