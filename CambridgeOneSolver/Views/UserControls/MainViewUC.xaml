@@ -42,8 +42,9 @@
                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Width="150"
+        <Button Width="170"
                 Margin="0,5,0,0"
+                FontSize="15"
                 Grid.Row="1"
                 Command="{ Binding RequestAnswersCommand }"
                 Content="Получить ответы" 

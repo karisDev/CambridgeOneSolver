@@ -24,5 +24,19 @@ namespace CambridgeOneSolver.Views.CustomControls
         {
             InitializeComponent();
         }
+        public string MessageBody
+        {
+            get => (string)GetValue(MessageBodyProppety);
+            set => SetValue(MessageBodyProppety, value);
+        }
+        public static readonly DependencyProperty MessageBodyProppety =
+            DependencyProperty.Register("MessageBody", typeof(string), typeof(DonatorCard));
+        //public string DateMark
+        //{
+
+        //}
+        public static readonly DependencyProperty DateMarkProperty =
+            DependencyProperty.Register("MessageBody", typeof(string), typeof(DonatorCard));
+
     }
 }

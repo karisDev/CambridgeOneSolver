@@ -61,7 +61,7 @@ namespace CambridgeOneSolver.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("13")]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int AnswersFontSize {
             get {
                 return ((int)(this["AnswersFontSize"]));

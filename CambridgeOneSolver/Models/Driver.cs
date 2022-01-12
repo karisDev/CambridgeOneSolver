@@ -171,7 +171,13 @@ namespace CambridgeOneSolver.Models
             while (StartURL == driver.Url)
             {
                 driver.SwitchTo().Frame(driver.FindElementByTagName("iframe"));
-                content_wrap = driver.FindElementByXPath($"//section[contains(@style,\"flex\")]").GetAttribute("id");
+                try
+                {
+                    content_wrap = driver.FindElementByXPath($"//section[contains(@style,\"flex\")]").GetAttribute("id");
+                } catch
+                {
+                    continue;
+                }
                 
                 if (ElementCheck($"//section[contains(@style,\"flex\")]//input") &&
                     String.IsNullOrEmpty(driver.FindElementByXPath("//section[contains(@style,\"flex\")]//input").GetAttribute("value")))

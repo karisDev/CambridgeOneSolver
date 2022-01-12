@@ -65,8 +65,8 @@
             Maximum="25"
             TickFrequency="1"
             TickPlacement="TopLeft"
-            SelectionStart="13"
-            SelectionEnd="13"
+            SelectionStart="15"
+            SelectionEnd="15"
             IsSelectionRangeEnabled="True" />
         <!--#endregion-->
         <!--#endregion-->
@@ -116,7 +116,7 @@
                 Text="@CambridgeOneSolver" />
             </StackPanel>
             <StackPanel
-                Margin="0,10"
+                Margin="0,15"
                 Orientation="Horizontal">
                 <Image
                     Width="25"

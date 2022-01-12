@@ -4,9 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CambridgeOneSolver.Views.CustomControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="300" d:DesignWidth="150">
+    <materialDesign:Card
+                    VerticalAlignment="Stretch"
+                    Margin="5"
+                    Background="PaleVioletRed"
+                    Foreground="White"
+                    Width="140">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock
+                            Padding="5"
+                            FontSize="14"
+                            TextWrapping="Wrap"
+                            Text="Бро, ты лучший. Для МИСОСовца не жалко" />
+            <Separator
+                            Grid.Row="1"
+                          Height="5"
+                          Style="{StaticResource MaterialDesignDarkSeparator}" />
+            <TextBlock
+                            Grid.Row="2"
+                            Padding="5"
+                            FontSize="14"
+                            TextWrapping="Wrap"
+                            Text="23 Октября 2021"/>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>
