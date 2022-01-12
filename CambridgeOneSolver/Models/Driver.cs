@@ -68,9 +68,6 @@ namespace CambridgeOneSolver.Models
             return "";
         }
 
-
-
-
         internal static async Task LoginAsync()
         {
             await WaitElementLoad("//*[@id=\"gigya-loginID-56269462240752180\"]");

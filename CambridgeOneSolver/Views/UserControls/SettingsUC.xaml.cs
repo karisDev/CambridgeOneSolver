@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,11 @@ namespace CambridgeOneSolver.Views.UserControls
         public SettingsUC()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Initialized(object sender, EventArgs e)
+        {
+            IsDarkTheme.IsChecked = IsDarkTheme.IsChecked;
         }
     }
 }

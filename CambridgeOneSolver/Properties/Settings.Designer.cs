@@ -58,5 +58,17 @@ namespace CambridgeOneSolver.Properties {
                 this["IsThemeDark"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("13")]
+        public int AnswersFontSize {
+            get {
+                return ((int)(this["AnswersFontSize"]));
+            }
+            set {
+                this["AnswersFontSize"] = value;
+            }
+        }
     }
 }

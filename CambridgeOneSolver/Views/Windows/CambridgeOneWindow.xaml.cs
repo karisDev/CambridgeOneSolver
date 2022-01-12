@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using CambridgeOneSolver.Infrastructure;
+using System.Windows.Shapes;
+using System.Threading;
 
 namespace CambridgeOneSolver.Views.Windows
 {
@@ -28,25 +30,29 @@ namespace CambridgeOneSolver.Views.Windows
         }
         private void OnInitialized(object sender, EventArgs e)
         {
-            OnInitializedAsync();
+            //Thread thread = new Thread(OnInitializedAsync);
+            //thread.Start();
 
-            //Call command from viewmodel     
-            if ((this.DataContext is CambridgeWindowViewModel vm) && (vm.ChangeThemeCommand.CanExecute(null)))
-                vm.ChangeThemeCommand.Execute(null);
+            OnInitializedAsync();
         }
 
-        private async Task OnInitializedAsync()
+        private async void OnInitializedAsync()
         {
             Driver.Start();
-            AppConstants.InitializeData();
-            if (AppConstants.Email != "")
+
+            if ((this.DataContext is CambridgeWindowViewModel vm) && (vm.ChangeThemeCommand.CanExecute(null)))
+                vm.ApplyThemeColor(AppConstants.IsThemeDark);
+
+            if (AppConstants.Email != "" || AppConstants.Email == null)
             {
                 await Driver.LoginAsync();
             }
             else
             {
-                Driver.ListenLoginAsync();
+                await Driver.ListenLoginAsync();
             }
+            
+
         }
         private void OnClosed(object sender, EventArgs e)
         {
@@ -69,6 +75,11 @@ namespace CambridgeOneSolver.Views.Windows
         private void DonatorsClick(object sender, RoutedEventArgs e)
         {
             MainTransitioner.SelectedIndex = 2;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(AppConstants.IsThemeDark.ToString());
         }
     }
 }

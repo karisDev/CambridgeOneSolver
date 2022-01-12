@@ -9,6 +9,7 @@
              Background="{DynamicResource MaterialDesignDarkBackground}"
              Foreground="{DynamicResource MaterialDesignDarkForeground}"
              FontFamily="/Resources/Fonts/#Google Sans"
+             Initialized="UserControl_Initialized"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="15,15,0,0">
         <Grid.ColumnDefinitions>
@@ -24,7 +25,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <!--regionОкно ответов-->
         <TextBlock
             FontSize="20"
@@ -37,6 +38,8 @@
             FontSize="15"
             Text="Тёмная тема" />
         <ToggleButton
+            x:Name="IsDarkTheme"
+            IsChecked="{Binding IsThemeDark}"
             Grid.Row="1"
             Grid.Column="1"
             Margin="15,0"
@@ -57,7 +60,7 @@
             materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True"
             Style="{StaticResource MaterialDesignDiscreteSlider}"
             VerticalAlignment="Center"
-            Value="13"
+            Value="{Binding AnswersFontSize}"
             Minimum="10"
             Maximum="25"
             TickFrequency="1"
@@ -79,7 +82,7 @@
             Margin="5,10"
             FontSize="15"
             TextWrapping="Wrap"
-            Text="Нажмите кнопку и перезапустите программу, чтобы сохранить новые данные для авто-логина" />
+            Text="Стереть данные для авто-логина. Программа сама перезапустится" />
 
         <Button
             Grid.Column="1"
@@ -87,8 +90,8 @@
             Margin="10, 0"
             Width="150"
             Content="Сброс данных"
-            HorizontalAlignment="Left"
-            Style="{StaticResource MaterialDesignOutlinedButton}" />
+            Command="{Binding DeleteSavedDataCommand}"
+            HorizontalAlignment="Left" />
         <!--#endregion-->
         
         <TextBlock

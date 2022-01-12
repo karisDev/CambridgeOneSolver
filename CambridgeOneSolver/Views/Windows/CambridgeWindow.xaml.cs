@@ -38,13 +38,13 @@ namespace CambridgeOneSolver
         {
             Driver.Start();
             AppConstants.InitializeData();
-            if (AppConstants.Email != "")
+            if (AppConstants.Email != "" || AppConstants.Email == null)
             {
                 await Driver.LoginAsync();
             }
             else
             {
-                Driver.ListenLoginAsync();
+                await Driver.ListenLoginAsync();
             }
         }
         private void OnClosed(object sender, EventArgs e)

@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <!--MouseDoubleClick="MoveWindow"-->
         <DataGrid
-            FontSize="13"
+            FontSize="{ Binding AnswersFontSize }"
             ItemsSource="{ Binding AnswerGrid }"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             IsReadOnly="False"
@@ -42,7 +42,7 @@
                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Width="145"
+        <Button Width="150"
                 Margin="0,5,0,0"
                 Grid.Row="1"
                 Command="{ Binding RequestAnswersCommand }"

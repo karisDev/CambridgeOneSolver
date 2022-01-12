@@ -23,6 +23,8 @@
         FontSize="15"
         Topmost="{Binding IsOnTop}"
         WindowState="Normal"
+        Initialized="OnInitialized"
+        Closed="OnClosed"
         WindowStyle="None">
     <!--
         Initialized="OnInitialized"
@@ -37,10 +39,17 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
+
+        <Border
+            Background="#404040"
+            Grid.RowSpan="10" Grid.ColumnSpan="10"
+            Margin="-10,-5,-10,0"
+            CornerRadius="4"/>
+
         <Border
             Background="{DynamicResource MaterialDesignDarkBackground}"
             Grid.RowSpan="10" Grid.ColumnSpan="10"
-            Margin="-10,-5,-10,0"
+            Margin="-9,-4,-9,1"
             CornerRadius="4"/>
         
         <TextBlock Text="Cambridge One Solver"
@@ -73,6 +82,7 @@
                 Style="{StaticResource MaterialDesignTabRadioButton}">
                 <materialDesign:PackIcon Kind="Heart" />
             </RadioButton>
+
         </StackPanel>
         <!--#endregion-->
         
