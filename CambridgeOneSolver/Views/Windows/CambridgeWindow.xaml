@@ -37,14 +37,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="29" />
+            <RowDefinition Height="55" />
         </Grid.RowDefinitions>
         <Border Grid.RowSpan="10" Grid.ColumnSpan="10" Background="{DynamicResource MaterialDesignDarkBackground}"
                     Margin="-15,-15,-15,0" CornerRadius="4"/>
         <TextBlock FontSize="18" Text="Cambridge One Solver"  Margin="0,5,0,0" HorizontalAlignment="Center"/>
         <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" VerticalAlignment="Top">
-
             <ToggleButton IsChecked="{Binding IsOnTop}" Width="50" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="0,0,5,0">
                 <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
                     <materialDesign:PackIcon.RenderTransform>
@@ -102,14 +100,13 @@
                 Content="Поддержать" Margin="5" />
 
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,4">
-            <TextBlock Text="Контакты: " VerticalAlignment="Center"/>
-            <Image Source="/Resources/Images/vk.png" Width="20"/>
-            <TextBlock Text=" @CambridgeOneSolver " VerticalAlignment="Center" />
-            <Image Source="/Resources/Images/telegram.png" Width="20" />
-            <TextBlock Text=" @CambridgeOneSolver " VerticalAlignment="Center"/>
-            <Image Source="/Resources/Images/ig.png" Width="20" />
-            <TextBlock Text=" фу, не надо" VerticalAlignment="Center"/>
-        </StackPanel>
+        <Image
+            Margin="5,0"
+            Cursor="Hand"
+            Grid.Row="2" Grid.ColumnSpan="2"
+            VerticalAlignment="Center" HorizontalAlignment="Right"
+            Source="/Resources/Images/vk.png"
+            Width="25">
+        </Image>
     </Grid>
 </Window>

@@ -141,6 +141,17 @@ namespace CambridgeOneSolver.ViewModels
         }
         private bool CanVisitBuyPageCommandExecute(object p) => true;
         #endregion
+
+        #region VisitVKCommand
+        public ICommand VisitVKCommand { get; }
+
+        private void OnVisitVKCommandExecuted(object p)
+        {
+            IsOnTop = false;
+            System.Diagnostics.Process.Start("https://vk.com/cambridgeonesolver");
+        }
+        private bool CanVisitVKCommandExecute(object p) => true;
+        #endregion
         #endregion
 
         #region Функции
@@ -166,12 +177,12 @@ namespace CambridgeOneSolver.ViewModels
         public CambridgeWindowViewModel()
         {
             #region Команды
-
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
             MinimizeApplicationCommand = new LambdaCommand(OnMinimizeApplicationCommandExecuted, CanMinimizeApplicationCommandExecute);
             RequestAnswersCommand = new LambdaCommand(OnRequestAnswersCommandExecuted, CanRequestAnswersCommandExecute);
             ChangeThemeCommand = new LambdaCommand(OnChangeThemeCommandExecuted, CanChangeThemeCommandExecute);
             VisitBuyPageCommand = new LambdaCommand(OnVisitBuyPageCommandExecuted, CanVisitBuyPageCommandExecute);
+            VisitVKCommand = new LambdaCommand(OnVisitVKCommandExecuted, CanVisitVKCommandExecute);
             #endregion
         }
     }

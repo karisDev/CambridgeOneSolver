@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="CambridgeOneSolver.Views.UserControls.MainViewUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:CambridgeOneSolver.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DesignWidth="770"
+             d:DesignHeight="390">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <!--MouseDoubleClick="MoveWindow"-->
+        <DataGrid
+            FontSize="13"
+            ItemsSource="{ Binding AnswerGrid }"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            IsReadOnly="False"
+            CanUserAddRows="False"
+            CanUserReorderColumns="False"
+            CanUserSortColumns="False"
+            SelectionUnit="Cell"
+            SelectionMode="Single"
+            AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Header="Номер"
+                    Binding="{ Binding Number }"
+                    IsReadOnly="True"
+                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <materialDesign:DataGridTextColumn Header="Ответ" Binding="{Binding Value}" Width="*"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Width="145"
+                Margin="0,5,0,0"
+                Grid.Row="1"
+                Command="{ Binding RequestAnswersCommand }"
+                Content="Получить ответы" 
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                materialDesign:ButtonProgressAssist.IsIndeterminate="{ Binding LoadingAnswers }" />
+    </Grid>
+</UserControl>

@@ -82,6 +82,26 @@
     <Compile Include="Models\ErrorMessages.cs" />
     <Compile Include="Models\ServerRequests.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
+    <Page Include="Views\CustomControls\DonatorCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\DonatorsUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\MainViewUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\SettingsUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\CambridgeOneWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Windows\CambridgeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,6 +111,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\CambridgeWindowViewModel.cs" />
+    <Compile Include="Views\CustomControls\DonatorCard.xaml.cs">
+      <DependentUpon>DonatorCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\DonatorsUC.xaml.cs">
+      <DependentUpon>DonatorsUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\MainViewUC.xaml.cs">
+      <DependentUpon>MainViewUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\SettingsUC.xaml.cs">
+      <DependentUpon>SettingsUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\CambridgeOneWindow.xaml.cs">
+      <DependentUpon>CambridgeOneWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\CambridgeWindow.xaml.cs">
       <DependentUpon>CambridgeWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

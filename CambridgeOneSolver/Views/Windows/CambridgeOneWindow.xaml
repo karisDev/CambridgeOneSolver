@@ -1,0 +1,140 @@
+﻿<Window x:Class="CambridgeOneSolver.Views.Windows.CambridgeOneWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:CambridgeOneSolver"
+        xmlns:cmd="clr-namespace:CambridgeOneSolver.Infrastructure.Commands"
+        xmlns:vm="clr-namespace:CambridgeOneSolver.ViewModels"
+        xmlns:uc="clr-namespace:CambridgeOneSolver.Views.UserControls"
+        mc:Ignorable="d"
+        Title="{ Binding Title }"
+        Icon="/Resources/Images/favicon-96x96.png"
+        FontFamily="/Resources/Fonts/#Google Sans"
+        MouseDown="MoveWindow"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip"
+        AllowsTransparency="True"    
+        Foreground="{DynamicResource MaterialDesignDarkForeground}"
+        Background="Transparent"
+        MinWidth="610" MinHeight="160"
+        Width="800" Height="500"
+        FontSize="15"
+        Topmost="{Binding IsOnTop}"
+        WindowState="Normal"
+        WindowStyle="None">
+    <!--
+        Initialized="OnInitialized"
+        Closed="OnClosed"
+    -->
+    <Window.DataContext>
+        <vm:CambridgeWindowViewModel />
+    </Window.DataContext>
+    <Grid Margin="10, 5, 10, 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Border
+            Background="{DynamicResource MaterialDesignDarkBackground}"
+            Grid.RowSpan="10" Grid.ColumnSpan="10"
+            Margin="-10,-5,-10,0"
+            CornerRadius="4"/>
+        
+        <TextBlock Text="Cambridge One Solver"
+            FontSize="18"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center" />
+        
+        <!--#region Кнопки вкладок-->
+        <StackPanel
+            Margin="0,5"
+            HorizontalAlignment="Left"
+            Orientation="Horizontal">
+            <RadioButton
+                Click="HomeClick"
+                MinWidth="50"
+                Style="{StaticResource MaterialDesignTabRadioButton}"
+                IsChecked="True">
+                <materialDesign:PackIcon Foreground="#ffc107" Kind="Home" />
+            </RadioButton>
+            <RadioButton
+                Click="SettingsClick"
+                MinWidth="50"
+                Style="{StaticResource MaterialDesignTabRadioButton}">
+                <materialDesign:PackIcon Foreground="#ffc107" Kind="Settings" />
+            </RadioButton>
+            <RadioButton
+                Click="DonatorsClick"
+                Foreground="PaleVioletRed"
+                MinWidth="50"
+                Style="{StaticResource MaterialDesignTabRadioButton}">
+                <materialDesign:PackIcon Kind="Heart" />
+            </RadioButton>
+        </StackPanel>
+        <!--#endregion-->
+        
+        <!--#region Закрепить/Свернуть/Закрыть-->
+        <StackPanel
+            Margin="0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <ToggleButton IsChecked="{Binding IsOnTop}" Width="50" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="0,0,5,0">
+                <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
+                    <materialDesign:PackIcon.RenderTransform>
+                        <RotateTransform Angle="45" />
+                    </materialDesign:PackIcon.RenderTransform>
+                </materialDesign:PackIcon>
+                <materialDesign:ToggleButtonAssist.OnContent>
+                    <materialDesign:PackIcon Kind="Pin" />
+                </materialDesign:ToggleButtonAssist.OnContent>
+            </ToggleButton>
+            <Button Command="{ Binding MinimizeApplicationCommand }" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Kind="WindowMinimize" />
+            </Button>
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Click="Close" Width="50">
+                <materialDesign:PackIcon Kind="Close" />
+            </Button>
+        </StackPanel>
+        <!--#endregion-->
+        
+        <materialDesign:Transitioner
+            x:Name="MainTransitioner"
+            Margin="0,0,0,10"
+            SelectedIndex="0"
+            Grid.Row="1">
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:FadeWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:FadeWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <uc:MainViewUC />
+            </materialDesign:TransitionerSlide>
+
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:FadeWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:FadeWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <uc:SettingsUC />
+            </materialDesign:TransitionerSlide>
+            
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:FadeWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:FadeWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <uc:DonatorcUC />
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
+    </Grid>
+</Window>
