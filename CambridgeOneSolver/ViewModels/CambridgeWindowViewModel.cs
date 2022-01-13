@@ -215,7 +215,7 @@ namespace CambridgeOneSolver.ViewModels
 
         #endregion
 
-        #region Кэш
+        #region Для драйвера
         public static string[] LatestAnswers { get; set; }
         #endregion
         public CambridgeWindowViewModel()

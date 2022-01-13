@@ -81,10 +81,5 @@ namespace CambridgeOneSolver.Views.Windows
         {
             MainTransitioner.SelectedIndex = 2;
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show(AppConstants.IsThemeDark.ToString());
-        }
     }
 }

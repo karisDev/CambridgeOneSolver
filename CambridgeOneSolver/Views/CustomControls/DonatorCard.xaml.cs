@@ -31,12 +31,12 @@ namespace CambridgeOneSolver.Views.CustomControls
         }
         public static readonly DependencyProperty MessageBodyProppety =
             DependencyProperty.Register("MessageBody", typeof(string), typeof(DonatorCard));
-        //public string DateMark
-        //{
-
-        //}
+        public string DateMark
+        {
+            get => (string)GetValue(DateMarkProperty);
+            set => SetValue(DateMarkProperty, value);
+        }
         public static readonly DependencyProperty DateMarkProperty =
-            DependencyProperty.Register("MessageBody", typeof(string), typeof(DonatorCard));
-
+            DependencyProperty.Register("DateMark", typeof(string), typeof(DonatorCard));
     }
 }

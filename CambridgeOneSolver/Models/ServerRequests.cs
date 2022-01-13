@@ -19,11 +19,23 @@ namespace CambridgeOneSolver.Models
         public bool Success { get; set; }
         [JsonProperty("displayMessage")]
         public string DisplayMessage { get; set; } = " ";
+
+        [JsonProperty("messageBody")]
+        public string[] DontatorsMessageBody { get; set; }
+        [JsonProperty("messageDate")]
+        public string[] DontatorsMessageDate { get; set; }
         #endregion
 
         public static async Task<ServerRequests> Asnwers(string DataLink, string Email, string Version)
         {
             string request = ServerURL + $"?responseType=getTasks&link={DataLink}&email={Email}&version={Version}";
+            var client = new HttpClient();
+            var result = await client.GetStringAsync(request);
+            return JsonConvert.DeserializeObject<ServerRequests>(result);
+        }
+        public static async Task<ServerRequests> Donators(string Email, string Version)
+        {
+            string request = ServerURL + $"?responseType=getDonators&email={Email}&version={Version}";
             var client = new HttpClient();
             var result = await client.GetStringAsync(request);
             return JsonConvert.DeserializeObject<ServerRequests>(result);
