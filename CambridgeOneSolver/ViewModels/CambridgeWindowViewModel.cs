@@ -162,17 +162,6 @@ namespace CambridgeOneSolver.ViewModels
         private bool CanVisitBuyPageCommandExecute(object p) => true;
         #endregion
 
-        #region VisitVKCommand
-        public ICommand VisitVKCommand { get; }
-
-        private void OnVisitVKCommandExecuted(object p)
-        {
-            IsOnTop = false;
-            System.Diagnostics.Process.Start("https://vk.com/cambridgeonesolver");
-        }
-        private bool CanVisitVKCommandExecute(object p) => true;
-        #endregion
-
         #region DeleteSavedDataCommand
         public ICommand DeleteSavedDataCommand { get; }
 
@@ -226,7 +215,6 @@ namespace CambridgeOneSolver.ViewModels
             RequestAnswersCommand = new LambdaCommand(OnRequestAnswersCommandExecuted, CanRequestAnswersCommandExecute);
             ChangeThemeCommand = new LambdaCommand(OnChangeThemeCommandExecuted, CanChangeThemeCommandExecute);
             VisitBuyPageCommand = new LambdaCommand(OnVisitBuyPageCommandExecuted, CanVisitBuyPageCommandExecute);
-            VisitVKCommand = new LambdaCommand(OnVisitVKCommandExecuted, CanVisitVKCommandExecute);
             DeleteSavedDataCommand = new LambdaCommand(OnDeleteSavedDataCommandExecuted, CanDeleteSavedDataCommandExecute);
             #endregion
         }
