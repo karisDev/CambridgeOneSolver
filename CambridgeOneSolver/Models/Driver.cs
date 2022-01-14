@@ -42,7 +42,10 @@ namespace CambridgeOneSolver.Models
         
         public static void Quit()
         {
-            driver.Quit();
+            try
+            {
+                driver.Quit();
+            } catch { }
         }
 
         public static string GetDataLink()

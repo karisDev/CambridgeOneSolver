@@ -30,13 +30,21 @@ namespace CambridgeOneSolver.Views.UserControls
         }
         async void InitializeDonators()
         {
-            ServerRequests serverRequests = await ServerRequests.Donators(AppConstants.Email, AppConstants.Version);
-            string[] messageText = serverRequests.DontatorsMessageBody;
-            string[] messageDate = serverRequests.DontatorsMessageDate;
-            for(int i = 0; i < messageDate.Length; i++)
+            try
             {
-                AddNewCard(messageText[i], messageDate[i]);
+                ServerRequests serverRequests = await ServerRequests.Donators(AppConstants.Email, AppConstants.Version);
+                string[] messageText = serverRequests.DontatorsMessageBody;
+                string[] messageDate = serverRequests.DontatorsMessageDate;
+                for (int i = 0; i < messageDate.Length; i++)
+                {
+                    AddNewCard(messageText[i], messageDate[i]);
+                }
             }
+            catch
+            {
+                AddNewCard("Если вы это видите, значит у нас упал сервер :c", "Или интернет не работает");
+            }
+
         }
         void AddNewCard(string MessageText, string DateText)
         {

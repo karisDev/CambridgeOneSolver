@@ -27,13 +27,11 @@
         <ScrollViewer
             Margin="5"
             Grid.Row="1">
-            <WrapPanel x:Name="DonatorsWrap">
-                
-            </WrapPanel>
+            <WrapPanel x:Name="DonatorsWrap" />
         </ScrollViewer>
         <Button
-            BorderBrush="PaleVioletRed"
-            Background="PaleVioletRed"
+            BorderBrush="#bc6581"
+            Background="#bc6581"
             Foreground="White"
             FontSize="15"
             Content="Оказаться в списке"
