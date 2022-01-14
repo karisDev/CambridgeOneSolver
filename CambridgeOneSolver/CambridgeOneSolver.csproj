@@ -160,11 +160,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\ig.png" />
-    <Resource Include="Resources\Images\telegram.png" />
     <Resource Include="Resources\Images\vk.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="lastshield.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\telegram.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.1.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.1.0\build\MaterialDesignThemes.targets')" />

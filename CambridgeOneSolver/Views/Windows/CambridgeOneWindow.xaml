@@ -4,28 +4,32 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:CambridgeOneSolver"
-        xmlns:cmd="clr-namespace:CambridgeOneSolver.Infrastructure.Commands"
         xmlns:vm="clr-namespace:CambridgeOneSolver.ViewModels"
         xmlns:uc="clr-namespace:CambridgeOneSolver.Views.UserControls"
         mc:Ignorable="d"
+        Width="800" Height="500"
         Title="{ Binding Title }"
         Icon="/Resources/Images/favicon-96x96.png"
         FontFamily="/Resources/Fonts/#Google Sans"
         MouseDown="MoveWindow"
-        WindowStartupLocation="CenterScreen"
-        ResizeMode="CanResizeWithGrip"
-        AllowsTransparency="True"    
         Foreground="{DynamicResource MaterialDesignDarkForeground}"
         Background="Transparent"
         MinWidth="610" MinHeight="160"
-        Width="800" Height="500"
         FontSize="15"
         Topmost="{Binding IsOnTop}"
-        WindowState="Normal"
         Initialized="OnInitialized"
+        AllowsTransparency="True"    
         Closed="OnClosed"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Normal"
         WindowStyle="None">
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            CaptionHeight="1"
+            CornerRadius="0"
+            GlassFrameThickness="1" />
+    </WindowChrome.WindowChrome>
     <!--
         Initialized="OnInitialized"
         Closed="OnClosed"
@@ -86,30 +90,7 @@
         </StackPanel>
         <!--#endregion-->
         
-        <!--#region Закрепить/Свернуть/Закрыть-->
-        <StackPanel
-            Margin="0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Orientation="Horizontal">
-            <ToggleButton IsChecked="{Binding IsOnTop}" Width="50" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="0,0,5,0">
-                <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
-                    <materialDesign:PackIcon.RenderTransform>
-                        <RotateTransform Angle="45" />
-                    </materialDesign:PackIcon.RenderTransform>
-                </materialDesign:PackIcon>
-                <materialDesign:ToggleButtonAssist.OnContent>
-                    <materialDesign:PackIcon Kind="Pin" />
-                </materialDesign:ToggleButtonAssist.OnContent>
-            </ToggleButton>
-            <Button Command="{ Binding MinimizeApplicationCommand }" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
-                <materialDesign:PackIcon Kind="WindowMinimize" />
-            </Button>
-            <Button Style="{StaticResource MaterialDesignFlatButton}" Click="Close" Width="50">
-                <materialDesign:PackIcon Kind="Close" />
-            </Button>
-        </StackPanel>
-        <!--#endregion-->
+
         
         <materialDesign:Transitioner
             x:Name="MainTransitioner"
@@ -146,5 +127,35 @@
                 <uc:DonatorcUC />
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>
+        
+        <!--#region Закрепить/Свернуть/Закрыть-->
+        <StackPanel
+            Margin="0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <ToggleButton
+                ToolTip="Отображать поверх окон"
+                IsChecked="{Binding IsOnTop}"
+                Width="50"
+                Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                Margin="0,0,5,0">
+                <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
+                    <materialDesign:PackIcon.RenderTransform>
+                        <RotateTransform Angle="45" />
+                    </materialDesign:PackIcon.RenderTransform>
+                </materialDesign:PackIcon>
+                <materialDesign:ToggleButtonAssist.OnContent>
+                    <materialDesign:PackIcon Kind="Pin" />
+                </materialDesign:ToggleButtonAssist.OnContent>
+            </ToggleButton>
+            <Button Command="{ Binding MinimizeApplicationCommand }" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Kind="WindowMinimize" />
+            </Button>
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Click="Close" Width="50">
+                <materialDesign:PackIcon Kind="Close" />
+            </Button>
+        </StackPanel>
+        <!--#endregion-->
     </Grid>
 </Window>

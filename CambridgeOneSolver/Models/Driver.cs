@@ -177,21 +177,19 @@ namespace CambridgeOneSolver.Models
                 try
                 {
                     content_wrap = driver.FindElementByXPath($"//section[contains(@style,\"flex\")]").GetAttribute("id");
-                } catch
-                {
-                    continue;
-                }
-                
-                if (ElementCheck($"//section[contains(@style,\"flex\")]//input") &&
-                    String.IsNullOrEmpty(driver.FindElementByXPath("//section[contains(@style,\"flex\")]//input").GetAttribute("value")))
-                {
-                    try
-                    {
-                        WriteInTextBox(content_wrap);
-                    }
-                    catch { }
-                }
 
+
+                    if (ElementCheck($"//section[contains(@style,\"flex\")]//input") &&
+                        String.IsNullOrEmpty(driver.FindElementByXPath("//section[contains(@style,\"flex\")]//input").GetAttribute("value")))
+                    {
+                        try
+                        {
+                            WriteInTextBox(content_wrap);
+                        }
+                        catch { }
+                    }
+                } catch { }
+                
                 driver.SwitchTo().DefaultContent();
                 await Task.Delay(500);
             }
