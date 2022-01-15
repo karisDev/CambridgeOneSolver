@@ -15,6 +15,7 @@ namespace CambridgeOneSolver.Views.Windows
     /// </summary>
     public partial class CambridgeOneWindow : Window
     {
+        // моих навыков не хватает для переноса всех функций в viewmodel. сделайте пул если вам удастся
         public CambridgeOneWindow()
         {
             InitializeComponent();
