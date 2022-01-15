@@ -42,7 +42,10 @@ namespace CambridgeOneSolver.Models
         
         public static void Quit()
         {
-            driver.Quit();
+            try
+            {
+                driver.Quit();
+            } catch { }
         }
 
         public static string GetDataLink()
@@ -53,7 +56,7 @@ namespace CambridgeOneSolver.Models
             }
             catch
             {
-                return "";
+                return null;
             }
             foreach (IWebElement i in driver.FindElementsByTagName("script"))
             {
@@ -65,11 +68,8 @@ namespace CambridgeOneSolver.Models
                 }
             }
             driver.SwitchTo().DefaultContent();
-            return "";
+            return null;
         }
-
-
-
 
         internal static async Task LoginAsync()
         {
@@ -124,68 +124,33 @@ namespace CambridgeOneSolver.Models
             }
         }
         #region Automation
-        public static async Task WriteAndWait(string content_wrap)
-        {
-            int WrapId = int.Parse(Regex.Match(content_wrap, @"\d+").Value);
-
-            Console.WriteLine("Cycle started and is about to write: ", CambridgeWindowViewModel.LatestAnswers[WrapId]);
-            driver.FindElementByXPath($"//section[contains(@style,\"flex\")]//input").SendKeys(CambridgeWindowViewModel.LatestAnswers[WrapId].Replace('\n', '\t'));
-            Console.WriteLine("Written, waiting for a task switch");
-            while (ElementCheck($"//section[@id=\"{content_wrap}\" and contains(@style,\"flex\")]"))
-                await Task.Delay(2000);
-            Console.WriteLine("Switched");
-        }
-        public static async void FillTextBlocks()
-        {
-            Console.WriteLine("Filling text blocks");
-            string content_wrap;
-            //display: flex; 
-            var StartURL = driver.Url;
-
-            while (StartURL == driver.Url)
-            {
-                try
-                {
-                    driver.SwitchTo().Frame(driver.FindElementByTagName("iframe"));
-                    if (ElementCheck($"//section[contains(@style,\"flex\")]//input"))
-                    {
-                        content_wrap = driver.FindElementByXPath($"//section[contains(@style,\"flex\")]").GetAttribute("id");
-                        await WriteAndWait(content_wrap);
-                        driver.SwitchTo().DefaultContent();
-                    }
-                    else
-                    {
-                        driver.SwitchTo().DefaultContent();
-                        await Task.Delay(1000);
-                    }
-                }
-                catch
-                {
-                    driver.SwitchTo().DefaultContent();
-                    await Task.Delay(1000);
-                }
-            }
-            Console.WriteLine("Stopped filling text blocks");
-        }
         public static async void FillTextBlocks2()
         {
             string content_wrap;
             var StartURL = driver.Url;
             while (StartURL == driver.Url)
             {
-                driver.SwitchTo().Frame(driver.FindElementByTagName("iframe"));
-                content_wrap = driver.FindElementByXPath($"//section[contains(@style,\"flex\")]").GetAttribute("id");
-                
-                if (ElementCheck($"//section[contains(@style,\"flex\")]//input") &&
-                    String.IsNullOrEmpty(driver.FindElementByXPath("//section[contains(@style,\"flex\")]//input").GetAttribute("value")))
+                try
                 {
-                    try
-                    {
-                        WriteInTextBox(content_wrap);
-                    }
-                    catch { }
+                    driver.SwitchTo().Frame(driver.FindElementByTagName("iframe"));
                 }
+                catch { driver.SwitchTo().DefaultContent(); }
+                try
+                {
+                    content_wrap = driver.FindElementByXPath($"//section[contains(@style,\"flex\")]").GetAttribute("id");
 
+
+                    if (ElementCheck($"//section[contains(@style,\"flex\")]//input") &&
+                        String.IsNullOrEmpty(driver.FindElementByXPath("//section[contains(@style,\"flex\")]//input").GetAttribute("value")))
+                    {
+                        try
+                        {
+                            WriteInTextBox(content_wrap);
+                        }
+                        catch { }
+                    }
+                } catch { }
+                
                 driver.SwitchTo().DefaultContent();
                 await Task.Delay(500);
             }

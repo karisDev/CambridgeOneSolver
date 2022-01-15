@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="CambridgeOneSolver.Views.CustomControls.DonatorCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CambridgeOneSolver.Views.CustomControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             Name="This"
+             d:DesignHeight="150" d:DesignWidth="150">
+    <materialDesign:Card
+                    VerticalAlignment="Stretch"
+                    Margin="5"
+                    Background="#bc6581"
+                    Foreground="White"
+                    Width="140">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock
+                            Padding="5"
+                            FontSize="14"
+                            TextWrapping="Wrap"
+                            Text="{Binding MessageBody, ElementName=This}" />
+            <Separator
+                            Grid.Row="1"
+                          Height="5"
+                          Style="{StaticResource MaterialDesignDarkSeparator}" />
+            <TextBlock
+                            Grid.Row="2"
+                            Padding="5"
+                            FontSize="14"
+                            TextWrapping="Wrap"
+                            Text="{Binding DateMark, ElementName=This}"/>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>

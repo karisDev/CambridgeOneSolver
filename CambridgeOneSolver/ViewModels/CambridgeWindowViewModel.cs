@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -40,15 +41,6 @@ namespace CambridgeOneSolver.ViewModels
         }
         #endregion
 
-        #region Видимость кнопки "Активировать"
-        private Visibility _ActivateButtonVisibility = Visibility.Collapsed;
-        public Visibility ActivateButtonVisibility
-        {
-            get => _ActivateButtonVisibility;
-            set => Set(ref _ActivateButtonVisibility, value);
-        }
-        #endregion
-
         #region Закрепление окна
         private bool _IsOnTop = true;
         public bool IsOnTop
@@ -57,11 +49,39 @@ namespace CambridgeOneSolver.ViewModels
             set => Set(ref _IsOnTop, value);
         }
         #endregion
+
+        #region Темная ли тема
+        private bool _IsThemeDark = AppConstants.IsThemeDark;
+        public bool IsThemeDark
+        {
+            get => _IsThemeDark;
+            set
+            {
+                Set(ref _IsThemeDark, value);
+                AppConstants.IsThemeDark = _IsThemeDark;
+                ApplyThemeColor(_IsThemeDark);
+            }
+        }
+        #endregion
+
+        #region Размер шрифта
+
+        private int _AnswersFontSize = AppConstants.AnswersFontSize;
+        public int AnswersFontSize
+        {
+            get => _AnswersFontSize;
+            set
+            {
+                Set(ref _AnswersFontSize, value);
+                AppConstants.AnswersFontSize = _AnswersFontSize;
+            }
+        }
+
+        #endregion
         #endregion
 
         #region Команды
         #region CloseApplicationCommand
-
         public ICommand CloseApplicationCommand { get; }
 
         private void OnCloseApplicationCommandExecuted(object p)
@@ -88,26 +108,20 @@ namespace CambridgeOneSolver.ViewModels
         {
             LoadingAnswers = true;
             string DataLink = Driver.GetDataLink();
-            if (DataLink == "")
-            {
+            if (DataLink == null)
                 ErrorMessages.NoDataURL();
-            }
             else
             {
                 try
                 {
                     ServerRequests sr = await ServerRequests.Asnwers(DataLink, AppConstants.Email, AppConstants.Version);
-                    if (sr.DisplayMessage != " ") MessageBox.Show(sr.DisplayMessage);
-                    if (sr.Success == false) ActivateButtonVisibility = Visibility.Visible;
-                    LatestAnswers = sr.Data;
+                    if (sr.DisplayMessage != null)
+                        MessageBox.Show(sr.DisplayMessage);
+
                     DisplayAnswers(sr.Data);
                     Driver.FillTextBlocks2();
                 }
-                catch
-                {
-                    ErrorMessages.ApiServerConnectionError();
-                }
-
+                catch { ErrorMessages.ApiServerConnectionError(); }
             }
             LoadingAnswers = false;
         }
@@ -121,12 +135,13 @@ namespace CambridgeOneSolver.ViewModels
         private readonly PaletteHelper _paletteHelper = new PaletteHelper();
         private void OnChangeThemeCommandExecuted(object p)
         {
-            Infrastructure.AppConstants.IsThemeDark = !Infrastructure.AppConstants.IsThemeDark;
+            ApplyThemeColor(IsThemeDark);
+/*            Infrastructure.AppConstants.IsThemeDark = !Infrastructure.AppConstants.IsThemeDark;
             ITheme theme = _paletteHelper.GetTheme();
             IBaseTheme baseTheme = Infrastructure.AppConstants.IsThemeDark ? new MaterialDesignDarkTheme() : (IBaseTheme)new MaterialDesignLightTheme();
             theme.SetBaseTheme(baseTheme);
             _paletteHelper.SetTheme(theme);
-        }
+*/        }
         private bool CanChangeThemeCommandExecute(object p) => true;
         #endregion
 
@@ -141,11 +156,30 @@ namespace CambridgeOneSolver.ViewModels
         }
         private bool CanVisitBuyPageCommandExecute(object p) => true;
         #endregion
+
+        #region DeleteSavedDataCommand
+        public ICommand DeleteSavedDataCommand { get; }
+
+        private void OnDeleteSavedDataCommandExecuted(object p)
+        {
+            Driver.Quit();
+            Process.Start(Application.ResourceAssembly.Location);
+            AppConstants.Email = "";
+            AppConstants.SaveData();
+            Application.Current.Shutdown();
+        }
+        private bool CanDeleteSavedDataCommandExecute(object p) => true;
+        #endregion
+
+        #region CheckForUpdatesCommand
+
+        #endregion
         #endregion
 
         #region Функции
         public void DisplayAnswers(string[] answers)
         {
+            LatestAnswers = answers;
             if (answers.Length > 0)
             {
                 AnswersTable[] at = new AnswersTable[answers.Length];
@@ -158,20 +192,30 @@ namespace CambridgeOneSolver.ViewModels
             }
             else ErrorMessages.NoAnswersRecieved();
         }
+
+        public void ApplyThemeColor(bool isDark)
+        {
+            //Infrastructure.AppConstants.IsThemeDark = isDark;
+            ITheme theme = _paletteHelper.GetTheme();
+            IBaseTheme baseTheme = isDark ? new MaterialDesignDarkTheme() : (IBaseTheme)new MaterialDesignLightTheme();
+            theme.SetBaseTheme(baseTheme);
+            _paletteHelper.SetTheme(theme);
+        }
+
         #endregion
 
-        #region Кэш
+        #region Для драйвера
         public static string[] LatestAnswers { get; set; }
         #endregion
         public CambridgeWindowViewModel()
         {
             #region Команды
-
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
             MinimizeApplicationCommand = new LambdaCommand(OnMinimizeApplicationCommandExecuted, CanMinimizeApplicationCommandExecute);
             RequestAnswersCommand = new LambdaCommand(OnRequestAnswersCommandExecuted, CanRequestAnswersCommandExecute);
             ChangeThemeCommand = new LambdaCommand(OnChangeThemeCommandExecuted, CanChangeThemeCommandExecute);
             VisitBuyPageCommand = new LambdaCommand(OnVisitBuyPageCommandExecuted, CanVisitBuyPageCommandExecute);
+            DeleteSavedDataCommand = new LambdaCommand(OnDeleteSavedDataCommandExecuted, CanDeleteSavedDataCommandExecute);
             #endregion
         }
     }
