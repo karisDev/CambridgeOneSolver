@@ -108,25 +108,20 @@ namespace CambridgeOneSolver.ViewModels
         {
             LoadingAnswers = true;
             string DataLink = Driver.GetDataLink();
-            if (DataLink == "")
-            {
+            if (DataLink == null)
                 ErrorMessages.NoDataURL();
-            }
             else
             {
                 try
                 {
                     ServerRequests sr = await ServerRequests.Asnwers(DataLink, AppConstants.Email, AppConstants.Version);
-                    if (sr.DisplayMessage != " ") MessageBox.Show(sr.DisplayMessage);
-                    LatestAnswers = sr.Data;
+                    if (sr.DisplayMessage != null)
+                        MessageBox.Show(sr.DisplayMessage);
+
                     DisplayAnswers(sr.Data);
                     Driver.FillTextBlocks2();
                 }
-                catch
-                {
-                    ErrorMessages.ApiServerConnectionError();
-                }
-
+                catch { ErrorMessages.ApiServerConnectionError(); }
             }
             LoadingAnswers = false;
         }
@@ -184,6 +179,7 @@ namespace CambridgeOneSolver.ViewModels
         #region Функции
         public void DisplayAnswers(string[] answers)
         {
+            LatestAnswers = answers;
             if (answers.Length > 0)
             {
                 AnswersTable[] at = new AnswersTable[answers.Length];

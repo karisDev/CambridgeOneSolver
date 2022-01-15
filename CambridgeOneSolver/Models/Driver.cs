@@ -56,7 +56,7 @@ namespace CambridgeOneSolver.Models
             }
             catch
             {
-                return "";
+                return null;
             }
             foreach (IWebElement i in driver.FindElementsByTagName("script"))
             {
@@ -68,7 +68,7 @@ namespace CambridgeOneSolver.Models
                 }
             }
             driver.SwitchTo().DefaultContent();
-            return "";
+            return null;
         }
 
         internal static async Task LoginAsync()

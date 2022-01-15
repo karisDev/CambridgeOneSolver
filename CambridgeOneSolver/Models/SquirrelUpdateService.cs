@@ -11,6 +11,7 @@ namespace CambridgeOneSolver.Models
     class SquirrelUpdateService
     {
         private Action<string, bool> ReturnStatus;
+        // этот код нужно переделать
         public async void CheckForUpdates()
         {
             ReturnStatus("Проверяем обновления", true);
