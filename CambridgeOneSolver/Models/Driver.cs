@@ -13,7 +13,7 @@ namespace CambridgeOneSolver.Models
     internal class Driver
     {
         public static ChromeDriver driver;
-        
+        public static bool IsActive = false;
         public static void Start()
         {
             try
@@ -30,13 +30,15 @@ namespace CambridgeOneSolver.Models
             }
             try
             {
+                IsActive = true;
                 driver.Navigate().GoToUrl("https://www.cambridgeone.org/login");
             }
             catch
             {
                 ErrorMessages.NoInternet();
                 Driver.Quit();
-                Application.Current.Shutdown();
+                IsActive = false;
+                //Application.Current.Shutdown();
             }
         }
         
@@ -46,10 +48,13 @@ namespace CambridgeOneSolver.Models
             {
                 driver.Quit();
             } catch { }
+            IsActive = false;
         }
 
         public static string GetDataLink()
         {
+            if (!IsActive)
+                return null;
             try
             {
                 driver.SwitchTo().Frame(driver.FindElementByTagName("iframe"));
@@ -74,14 +79,17 @@ namespace CambridgeOneSolver.Models
         internal static async Task LoginAsync()
         {
             await WaitElementLoad("//*[@id=\"gigya-loginID-56269462240752180\"]");
-            driver.FindElementById("gigya-loginID-56269462240752180").SendKeys(AppConstants.Email);
-            driver.FindElementById("gigya-password-56383998600152700").SendKeys(AppConstants.Password);
-            driver.FindElementByXPath("//input[@value=\"Log in\"]").Click();
+            if (IsActive)
+            {
+                driver.FindElementById("gigya-loginID-56269462240752180").SendKeys(AppConstants.Email);
+                driver.FindElementById("gigya-password-56383998600152700").SendKeys(AppConstants.Password);
+                driver.FindElementByXPath("//input[@value=\"Log in\"]").Click();
+            }
         }
 
         private static async Task WaitElementLoad(string xpath)
         {
-            while (!ElementCheck(xpath))
+            while (IsActive && !ElementCheck(xpath))
             {
                 await Task.Delay(500);
             }
@@ -89,7 +97,7 @@ namespace CambridgeOneSolver.Models
 
         private static bool ElementCheck(string xpath)
         {
-            if (driver.FindElementsByXPath(xpath).Count == 0)
+            if (IsActive && driver.FindElementsByXPath(xpath).Count == 0)
             {
                 return false;
             }
@@ -99,7 +107,7 @@ namespace CambridgeOneSolver.Models
         public static async Task ListenLoginAsync()
         {
             string url = "https://www.cambridgeone.org/login";
-            while (true)
+            while (IsActive)
             {
                 if (driver.Url == url) await LoginPageDetectedAsync();
                 await Task.Delay(10000);
@@ -109,7 +117,7 @@ namespace CambridgeOneSolver.Models
         public static async Task LoginPageDetectedAsync()
         {
             string url = "https://www.cambridgeone.org/login";
-            while (driver.Url == url)
+            while (IsActive && driver.Url == url)
             {
                 try
                 {
@@ -126,9 +134,12 @@ namespace CambridgeOneSolver.Models
         #region Automation
         public static async void FillTextBlocks2()
         {
+            if (!IsActive)
+                return;
+
             string content_wrap;
             var StartURL = driver.Url;
-            while (StartURL == driver.Url)
+            while (IsActive && StartURL == driver.Url)
             {
                 try
                 {
