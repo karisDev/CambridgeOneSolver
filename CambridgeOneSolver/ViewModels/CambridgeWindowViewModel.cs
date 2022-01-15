@@ -175,6 +175,10 @@ namespace CambridgeOneSolver.ViewModels
         }
         private bool CanDeleteSavedDataCommandExecute(object p) => true;
         #endregion
+
+        #region CheckForUpdatesCommand
+
+        #endregion
         #endregion
 
         #region Функции

@@ -11,113 +11,142 @@
              FontFamily="/Resources/Fonts/#Google Sans"
              Initialized="UserControl_Initialized"
              d:DesignHeight="450" d:DesignWidth="800">
-    <ScrollViewer
-        VerticalScrollBarVisibility="Auto"
-        Margin="15,15,0,0">
-        <StackPanel>
-            <TextBlock
-                FontSize="20"
-                Text="Таблица ответов" />
-            <StackPanel Orientation="Horizontal">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <ScrollViewer
+            VerticalScrollBarVisibility="Auto"
+            Margin="15,15,0,0">
+            <StackPanel>
                 <TextBlock
-                    Width="250"
-                    Margin="5,10"
-                    FontSize="15"
-                    Text="Тёмная тема" />
-                <ToggleButton
-                    x:Name="IsDarkTheme"
-                    IsChecked="{Binding IsThemeDark}"
-                    Margin="15,0"
-                    HorizontalAlignment="Left" />
-            </StackPanel>
-            <DockPanel>
-                <TextBlock
-                    Width="250"
-                    Height="50"
-                    FontSize="{Binding ElementName=AnswersGridFontSize, Path=Value}"
-                    Grid.Row="2"
-                    Margin="5,5,0,0"
-                    Text="Размер шрифта" />
-                <Slider
-                    x:Name="AnswersGridFontSize"
-                    Margin="15,0"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True"
-                    Style="{StaticResource MaterialDesignDiscreteSlider}"
-                    VerticalAlignment="Center"
-                    Value="{Binding AnswersFontSize}"
-                    Minimum="10"
-                    Maximum="25"
-                    TickFrequency="1"
-                    TickPlacement="TopLeft"
-                    SelectionStart="15"
-                    SelectionEnd="15"
-                    IsSelectionRangeEnabled="True" />
-            </DockPanel>
-            <TextBlock
-                Grid.Row="3"
-                FontSize="20"
-                Text="Авто-логин" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock
-                    Width="250"
-                    Margin="5,10"
-                    FontSize="15"
-                    TextWrapping="Wrap"
-                    Text="Стереть данные для авто-логина. Программа сама перезапустится" />
-                <Button
-                    Margin="10, 0"
-                    Width="150"
-                    Content="Сброс данных"
-                    Command="{Binding DeleteSavedDataCommand}"
-                    HorizontalAlignment="Left" />
-            </StackPanel>
-            <TextBlock
-                Margin="0,10"
-                Grid.Row="5"
-                FontSize="20"
-                Text="Контакты" />
-            <StackPanel
-            Margin="10,5"
-            VerticalAlignment="Top"
-            Grid.ColumnSpan="2"
-            Grid.Row="6">
-                <StackPanel
-                Orientation="Horizontal">
-                    <Image
-                Width="25"
-                Source="/Resources/Images/vk.png" />
+                    FontSize="20"
+                    Text="Таблица ответов" />
+                <StackPanel Orientation="Horizontal">
                     <TextBlock
-                Margin="5,0"
-                VerticalAlignment="Center"
-                FontSize="15"
-                Text="@CambridgeOneSolver" />
+                        Width="250"
+                        Margin="5,10"
+                        FontSize="15"
+                        Text="Тёмная тема" />
+                    <ToggleButton
+                        x:Name="IsDarkTheme"
+                        IsChecked="{Binding IsThemeDark}"
+                        Margin="15,0"
+                        HorizontalAlignment="Left" />
+                </StackPanel>
+                <DockPanel>
+                    <TextBlock
+                        Width="250"
+                        Height="50"
+                        FontSize="{Binding ElementName=AnswersGridFontSize, Path=Value}"
+                        Grid.Row="2"
+                        Margin="5,5,0,0"
+                        Text="Размер шрифта" />
+                    <Slider
+                        x:Name="AnswersGridFontSize"
+                        Margin="15,0"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True"
+                        Style="{StaticResource MaterialDesignDiscreteSlider}"
+                        VerticalAlignment="Center"
+                        Value="{Binding AnswersFontSize}"
+                        Minimum="10"
+                        Maximum="25"
+                        TickFrequency="1"
+                        TickPlacement="TopLeft"
+                        SelectionStart="15"
+                        SelectionEnd="15"
+                        IsSelectionRangeEnabled="True" />
+                </DockPanel>
+                <TextBlock
+                    Grid.Row="3"
+                    FontSize="20"
+                    Text="Авто-логин" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Width="250"
+                        Margin="5,10"
+                        FontSize="15"
+                        TextWrapping="Wrap"
+                        Text="Стереть данные для авто-логина. Программа сама перезапустится" />
+                    <Button
+                        Margin="10, 0"
+                        Width="150"
+                        Content="Сброс данных"
+                        Command="{Binding DeleteSavedDataCommand}"
+                        HorizontalAlignment="Left" />
                 </StackPanel>
                 <StackPanel
-                Margin="0,15"
-                Orientation="Horizontal">
-                    <Image
-                    Width="25"
-                    Source="/Resources/Images/telegram.png" />
+                    Orientation="Horizontal">
                     <TextBlock
+                        x:Name="ReleaseVersion"
+                        Margin="0,10"
+                        FontSize="20"
+                        Text="Версия 1.1.1" />
+                    <ProgressBar
+                        x:Name="UpdateIndicator"
+                        Margin="10,0"
+                        Style="{StaticResource MaterialDesignCircularProgressBar}"
+                        Value="0"
+                        IsIndeterminate="True" />
+                </StackPanel>
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Width="250"
+                    x:Name="UpdateStatus"
+                    Margin="5,0"
+                    FontSize="15"
+                    TextWrapping="Wrap"
+                    Text="Происходит проверка обновлений" />
+                <TextBlock
+                    Margin="0,10"
+                    Grid.Row="5"
+                    FontSize="20"
+                    Text="Контакты" />
+
+            </StackPanel>
+        </ScrollViewer>
+        <DockPanel
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Center"
+            Grid.Row="1">
+            <StackPanel
+                Orientation="Horizontal">
+                <Image
+                    Height="25"
+                    Width="25"
+                    Source="/Resources/Images/vk.png" />
+                <TextBlock
                     Margin="5,0"
                     VerticalAlignment="Center"
                     FontSize="15"
                     Text="@CambridgeOneSolver" />
-                </StackPanel>
-                <StackPanel
+            </StackPanel>
+            <StackPanel
                 Orientation="Horizontal">
-                    <Image
+                <Image
+                        Width="25"
+                        Source="/Resources/Images/telegram.png" />
+                <TextBlock
+                        Margin="5,0"
+                        VerticalAlignment="Center"
+                        FontSize="15"
+                        Text="@CambridgeOneSolver" />
+            </StackPanel>
+            <StackPanel
+                Orientation="Horizontal">
+                <Image
+                    Height="25"
                     Width="25"
                     Source="/Resources/Images/ig.png" />
-                    <TextBlock
+                <TextBlock
                     Margin="5,0"
                     VerticalAlignment="Center"
                     FontSize="15"
                     Text="не надо))" />
-                </StackPanel>
             </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
+        </DockPanel>
+    </Grid>
 </UserControl>

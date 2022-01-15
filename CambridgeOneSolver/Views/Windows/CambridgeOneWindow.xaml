@@ -43,7 +43,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-
+        
+        <!--#region Фон-->
         <Border
             Background="#404040"
             Grid.RowSpan="10" Grid.ColumnSpan="10"
@@ -55,6 +56,7 @@
             Grid.RowSpan="10" Grid.ColumnSpan="10"
             Margin="-9,-4,-9,1"
             CornerRadius="4"/>
+        <!--#endregion-->
         
         <TextBlock Text="Cambridge One Solver"
             FontSize="18"
