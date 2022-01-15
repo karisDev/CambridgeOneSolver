@@ -90,7 +90,7 @@
                         Margin="10,0"
                         Style="{StaticResource MaterialDesignCircularProgressBar}"
                         Value="0"
-                        IsIndeterminate="True" />
+                        IsIndeterminate="False" />
                 </StackPanel>
                 <TextBlock
                     HorizontalAlignment="Left"

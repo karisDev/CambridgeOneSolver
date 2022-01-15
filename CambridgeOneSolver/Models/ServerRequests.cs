@@ -26,6 +26,8 @@ namespace CambridgeOneSolver.Models
         public string[] DontatorsMessageDate { get; set; }
         #endregion
 
+        // почта ведется для идентификации количества пользователей на каждом курсе
+        // и среднего количества выполненных тестов, никакой мисис этих данных не получает
         public static async Task<ServerRequests> Asnwers(string DataLink, string Email, string Version)
         {
             string request = ServerURL + $"?responseType=getTasks&link={DataLink}&email={Email}&version={Version}";

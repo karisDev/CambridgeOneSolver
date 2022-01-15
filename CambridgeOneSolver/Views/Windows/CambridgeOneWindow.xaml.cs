@@ -37,8 +37,15 @@ namespace CambridgeOneSolver.Views.Windows
         }
         private void OnInitialized(object sender, EventArgs e)
         {
+            if (AppConstants.FirstRun)
+            {
+                MessageBox.Show("Запущенный терминал - связь chromedriver и CambridgeOneSolver, его открыл установщик. При следующем запуске он будет скрыт. Также на рабочем столе появилось два ярлыка. Сохраните только Cambridge One Solver.");
+                AppConstants.FirstRun = false;
+            }
+
             if ((this.DataContext is CambridgeWindowViewModel vm) && (vm.ChangeThemeCommand.CanExecute(null)))
                 vm.ApplyThemeColor(AppConstants.IsThemeDark);
+
 
             Thread thread = new Thread(OnInitializedAsync);
             thread.Start();

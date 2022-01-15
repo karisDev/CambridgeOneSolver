@@ -14,5 +14,8 @@
     <Setting Name="AnswersFontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
     </Setting>
+    <Setting Name="FirstRun" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

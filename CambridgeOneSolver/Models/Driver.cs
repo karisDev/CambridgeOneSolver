@@ -130,7 +130,11 @@ namespace CambridgeOneSolver.Models
             var StartURL = driver.Url;
             while (StartURL == driver.Url)
             {
-                driver.SwitchTo().Frame(driver.FindElementByTagName("iframe"));
+                try
+                {
+                    driver.SwitchTo().Frame(driver.FindElementByTagName("iframe"));
+                }
+                catch { driver.SwitchTo().DefaultContent(); }
                 try
                 {
                     content_wrap = driver.FindElementByXPath($"//section[contains(@style,\"flex\")]").GetAttribute("id");

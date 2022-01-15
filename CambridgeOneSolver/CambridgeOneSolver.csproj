@@ -115,6 +115,7 @@
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\ErrorMessages.cs" />
     <Compile Include="Models\ServerRequests.cs" />
+    <Compile Include="Models\SquirrelUpdateService.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Page Include="Views\CustomControls\DonatorCard.xaml">
       <SubType>Designer</SubType>
