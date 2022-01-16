@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace CambridgeOneSolver.Models
 {
-    internal class Driver
+    internal class Drivert
     {
         public static ChromeDriver driver;
         public static bool IsActive = false;
@@ -36,7 +36,7 @@ namespace CambridgeOneSolver.Models
             catch
             {
                 ErrorMessages.NoInternet();
-                Driver.Quit();
+                driver.Quit();
                 IsActive = false;
                 //Application.Current.Shutdown();
             }

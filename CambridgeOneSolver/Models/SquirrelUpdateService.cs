@@ -49,7 +49,7 @@ namespace CambridgeOneSolver.Models
             }
             catch
             {
-                ReturnStatus("Не удалось установить связь с GitHub", false);
+                ReturnStatus("Не удалось получить информацию о последней версии", false);
             }
 
         }

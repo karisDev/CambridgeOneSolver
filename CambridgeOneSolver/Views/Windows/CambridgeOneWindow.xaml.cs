@@ -46,35 +46,7 @@ namespace CambridgeOneSolver.Views.Windows
 
             if ((this.DataContext is CambridgeWindowViewModel vm) && (vm.ChangeThemeCommand.CanExecute(null)))
                 vm.ApplyThemeColor(AppConstants.IsThemeDark);
-
-
-            Thread thread = new Thread(OnInitializedAsync);
-            thread.Start();
         }
-
-        private async void OnInitializedAsync()
-        {
-            Driver.Start();
-
-            if (AppConstants.Email != "" || AppConstants.Email == null)
-            {
-                await Driver.LoginAsync();
-            }
-            else
-            {
-                await Driver.ListenLoginAsync();
-            }
-            
-
-        }
-        private void OnClosed(object sender, EventArgs e)
-        {
-            Driver.Quit();
-            AppConstants.SaveData();
-        }
-
-        private void Close(object sender, RoutedEventArgs e) => Close();
-
         private void HomeClick(object sender, RoutedEventArgs e)
         {
             MainTransitioner.SelectedIndex = 0;

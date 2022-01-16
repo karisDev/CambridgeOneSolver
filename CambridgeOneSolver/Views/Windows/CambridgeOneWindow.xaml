@@ -17,9 +17,7 @@
         MinWidth="610" MinHeight="160"
         FontSize="15"
         Topmost="{Binding IsOnTop}"
-        Initialized="OnInitialized"
         AllowsTransparency="True"    
-        Closed="OnClosed"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
         WindowState="Normal"
@@ -152,7 +150,7 @@
             <Button Command="{ Binding MinimizeApplicationCommand }" Width="50" Style="{StaticResource MaterialDesignFlatButton}">
                 <materialDesign:PackIcon Kind="WindowMinimize" />
             </Button>
-            <Button Style="{StaticResource MaterialDesignFlatButton}" Click="Close" Width="50">
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Command="{Binding CloseApplicationCommand}" Width="50">
                 <materialDesign:PackIcon Kind="Close" />
             </Button>
         </StackPanel>

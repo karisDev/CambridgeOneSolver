@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -13,6 +15,7 @@ namespace CambridgeOneSolver.ViewModels
 {
     class CambridgeWindowViewModel : ViewModel
     {
+        public DriverRework driver;
         #region Переменные
         #region Заголовок окна
         private string _Title = "Cambridge One Solver";
@@ -86,7 +89,7 @@ namespace CambridgeOneSolver.ViewModels
 
         private void OnCloseApplicationCommandExecuted(object p)
         {
-            Driver.Quit();
+            driver.Close();
             AppConstants.SaveData();
             Application.Current.Shutdown();
         }
@@ -107,7 +110,7 @@ namespace CambridgeOneSolver.ViewModels
         private async void OnRequestAnswersCommandExecuted(object p)
         {
             LoadingAnswers = true;
-            string DataLink = Driver.GetDataLink();
+            string DataLink = driver.RetrieveDataLink();
             if (DataLink == null)
                 ErrorMessages.NoDataURL();
             else
@@ -119,9 +122,14 @@ namespace CambridgeOneSolver.ViewModels
                         MessageBox.Show(sr.DisplayMessage);
 
                     DisplayAnswers(sr.Data);
-                    Driver.FillTextBlocks2();
+                    Thread thread = new Thread(() => driver.FillAnswersMachine(sr.Data, sr.TasksTag));
+                    thread.Start();
                 }
-                catch { ErrorMessages.ApiServerConnectionError(); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.StackTrace, ex.Message);
+                    ErrorMessages.ApiServerConnectionError();
+                }
             }
             LoadingAnswers = false;
         }
@@ -162,7 +170,7 @@ namespace CambridgeOneSolver.ViewModels
 
         private void OnDeleteSavedDataCommandExecuted(object p)
         {
-            Driver.Quit();
+            driver.Close();
             Process.Start(Application.ResourceAssembly.Location);
             AppConstants.Email = "";
             AppConstants.SaveData();
@@ -206,6 +214,19 @@ namespace CambridgeOneSolver.ViewModels
 
         #region Для драйвера
         public static string[] LatestAnswers { get; set; }
+        private void OnInitialize()
+        {
+            driver = new DriverRework(MessageBox.Show);
+            
+            if (AppConstants.Email != "" || AppConstants.Email == null)
+            {
+                driver.FillLoginPage();
+            }
+            else
+            {
+                driver.DetectLoginPage();
+            }
+        }
         #endregion
         public CambridgeWindowViewModel()
         {
@@ -217,6 +238,9 @@ namespace CambridgeOneSolver.ViewModels
             VisitBuyPageCommand = new LambdaCommand(OnVisitBuyPageCommandExecuted, CanVisitBuyPageCommandExecute);
             DeleteSavedDataCommand = new LambdaCommand(OnDeleteSavedDataCommandExecuted, CanDeleteSavedDataCommandExecute);
             #endregion
+            Thread thread = new Thread(OnInitialize);
+            thread.Start();
+
         }
     }
 }

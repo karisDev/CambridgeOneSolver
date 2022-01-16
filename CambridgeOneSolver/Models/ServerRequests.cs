@@ -13,6 +13,8 @@ namespace CambridgeOneSolver.Models
         #region Json properties
         [JsonProperty("data")]
         public string[] Data { get; set; }
+        [JsonProperty("tasksTag")]
+        public int[] TasksTag { get; set; }
         [JsonProperty("accountStatus")]
         public string AccountStatus { get; set; }
         [JsonProperty("displayMessage")]
