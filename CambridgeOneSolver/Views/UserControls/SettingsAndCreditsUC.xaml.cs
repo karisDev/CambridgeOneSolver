@@ -22,6 +22,7 @@ namespace CambridgeOneSolver.Views.UserControls
         private void UserControl_Initialized(object sender, EventArgs e)
         {
             IsDarkTheme.IsChecked = IsDarkTheme.IsChecked;
+            IsAutoFill.IsChecked = IsAutoFill.IsChecked;
         }
         private void AddVersionNumber()
         {

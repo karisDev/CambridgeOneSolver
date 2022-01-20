@@ -111,7 +111,6 @@
     <Compile Include="Infrastructure\Commands\LambdaCommand.cs" />
     <Compile Include="Infrastructure\AppConstants.cs" />
     <Compile Include="Models\AnswersTable.cs" />
-    <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\DriverRework.cs" />
     <Compile Include="Models\ErrorMessages.cs" />
     <Compile Include="Models\ServerRequests.cs" />

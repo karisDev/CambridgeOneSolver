@@ -25,7 +25,7 @@
             <Separator Margin="0,5,0,0" />
         </StackPanel>
         <ScrollViewer
-            Margin="5"
+            Margin="0,5"
             Grid.Row="1">
             <WrapPanel x:Name="DonatorsWrap" />
         </ScrollViewer>

@@ -10,6 +10,7 @@ namespace CambridgeOneSolver.Infrastructure
         public static bool IsThemeDark = Properties.Settings.Default.IsThemeDark;
         public static int AnswersFontSize = Properties.Settings.Default.AnswersFontSize;
         public static bool FirstRun = Properties.Settings.Default.FirstRun;
+        public static bool IsAutoFillEnabled = Properties.Settings.Default.IsAutoFillEnabled;
         public static void SaveData()
         {
             Properties.Settings.Default.Email = Email;

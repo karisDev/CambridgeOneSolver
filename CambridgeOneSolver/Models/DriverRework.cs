@@ -42,6 +42,7 @@ namespace CambridgeOneSolver.Models
         {
             Exception e = (Exception)args.ExceptionObject;
             PrintErrorMessage($"Была обнаружена неизвестная ошибка. Если хотите помочь исправить ее, то напишите в группу.\nТекст ошибки: {e.Message}\nStackTrace: {e.StackTrace}");
+            
         }
         public void Close()
         {
@@ -49,20 +50,24 @@ namespace CambridgeOneSolver.Models
             {
                 driver.Quit();
                 IsRunning = false;
-            }
-            catch (WebDriverException)
-            {
-                PrintErrorMessage("Программа сама в состоянии закрыть браузер. Вам не нужно его закрывать :)");
-            }
+            } catch { } // бывает webdriver exception, но на всякий пусть при любой ошибке обрабатывает
         }
-        private bool WaitForElement(string xpath, int IterationLimit = 9999) // ожидание Limit * 0.2 секунд
+        private bool WaitForElement(string xpath, int IterationLimit = 9999) // ожидание Limit * 0.1 секунд
         {
             int Iterations = 0;
-            while (CheckForElement(xpath) == false && ++Iterations < IterationLimit)
+            try
             {
-                Task.Delay(100).Wait();
+                while (CheckForElement(xpath) == false && ++Iterations < IterationLimit)
+                {
+                    Task.Delay(100).Wait();
+                }
+                return Iterations < IterationLimit;
             }
-            return Iterations < IterationLimit;
+            catch
+            {
+                return false;
+            }
+
         }
         private bool CheckForElement(string xpath)
         {
@@ -75,6 +80,7 @@ namespace CambridgeOneSolver.Models
             {
                 return false;
             }
+
         }
         private bool ClickMultipleTimes(string xpath, int IterationLimit = 9999)
         {
@@ -123,7 +129,7 @@ namespace CambridgeOneSolver.Models
                     }
                     else
                     {
-                        PrintErrorMessage($"Бот не смог найти кнопку");
+                        //PrintErrorMessage($"Бот не смог найти кнопку");
                         return false;
                     }
                 }
@@ -138,7 +144,7 @@ namespace CambridgeOneSolver.Models
                 {
                     driver.SwitchTo().Frame(driver.FindElement(By.TagName("iframe")));
                 }
-                catch (NoSuchElementException)
+                catch
                 {
                     return null;
                 }
@@ -190,7 +196,7 @@ namespace CambridgeOneSolver.Models
                 try
                 {
                     AppConstants.Email = driver.FindElement(By.XPath("//input[@id=\"gigya-loginID-56269462240752180\"]")).GetAttribute("value");
-                    AppConstants.Password = driver.FindElement(By.XPath("//input[@id=\"gigya-loginID-56269462240752180\"]")).GetAttribute("value");
+                    AppConstants.Password = driver.FindElement(By.XPath("//input[@id=\"gigya-password-56383998600152700\"]")).GetAttribute("value");
                 }
                 catch { }
                 await Task.Delay(400);
@@ -198,8 +204,7 @@ namespace CambridgeOneSolver.Models
         }
         public void FillLoginPage()
         {
-            WaitForElement("//*[@id=\"gigya-loginID-56269462240752180\"]");
-            if (IsRunning)
+            if (WaitForElement("//*[@id=\"gigya-loginID-56269462240752180\"]"))
             {
                 driver.FindElement(By.Id("gigya-loginID-56269462240752180")).SendKeys(AppConstants.Email);
                 driver.FindElement(By.Id("gigya-password-56383998600152700")).SendKeys(AppConstants.Password);
@@ -208,6 +213,7 @@ namespace CambridgeOneSolver.Models
         }
         public void FillAnswersMachine(string[] AnswersArray, int[] TasksTag)
         {
+            string StartUrl = driver.Url;
             driver.SwitchTo().Frame(driver.FindElement(By.TagName("iframe")));
 
             // если нет вопросов, то просто нажимаем кнопку Next
@@ -218,19 +224,21 @@ namespace CambridgeOneSolver.Models
                 return;
             }
 
-            CurrentContentWrap = GetActiveContentWrap();
-            if (CurrentContentWrap == null)
-                PrintErrorMessage("Найден какой-то неизвестный CSS селектор и программа не может вводить ответы. Напишите в группу, чтобы я исправил проблему.");
-            else
+
+            do
             {
-                do
+                // получаем код задания на экране и его номер по счету
+                CurrentContentWrap = GetActiveContentWrap();
+                if (CurrentContentWrap == null)
                 {
-                    // получаем код задания на экране и его номер по счету
-                    CurrentContentWrap = GetActiveContentWrap();
-                    ContentWrapID = int.Parse(CurrentContentWrap.GetAttribute("id").Split('_').Last());
+                    continue;
+                }
+                ContentWrapID = int.Parse(CurrentContentWrap.GetAttribute("id").Split('_').Last());
 
-                    // ответов бывает меньше, чем заданий (из-за презентаций)
 
+                // ответов бывает меньше, чем заданий (из-за презентаций)
+                try
+                {
                     if (AnswersArray.Length <= ContentWrapID)
                     {
                         SolveTaskByTag(null, TasksTag[ContentWrapID]);
@@ -239,9 +247,11 @@ namespace CambridgeOneSolver.Models
                     {
                         SolveTaskByTag(AnswersArray[ContentWrapID], TasksTag[ContentWrapID]);
                     }
+                } catch (NoSuchWindowException) { }
 
-                } while (ContentWrapID != TasksTag.Length - 1);
-            }
+
+            } while (ContentWrapID != TasksTag.Length - 1 && StartUrl == driver.Url);
+
 
             driver.SwitchTo().DefaultContent();
         }
@@ -260,7 +270,7 @@ namespace CambridgeOneSolver.Models
             driver.SwitchTo().DefaultContent();
             while (true)
             {
-                Task.Delay(2500).Wait();
+                Task.Delay(1500).Wait();
                 if (!ClickMultipleTimes(NextButtonXPath, 10))
                 {
                     return;
@@ -281,6 +291,11 @@ namespace CambridgeOneSolver.Models
                 {
                     return driver.FindElement(
                         By.XPath("//section[@style=\"display: flex;\"]"));
+                }
+                else if (CheckForElement("//section[@class=\"content-wrap custom-pool\"]"))
+                {
+                    return driver.FindElement(
+                        By.XPath("//section[@class=\"content-wrap custom-pool\"]"));
                 }
                 else
                 {
@@ -363,18 +378,61 @@ namespace CambridgeOneSolver.Models
         }
         private void TextGapHelper(string Answer)
         {
-            Task.Delay(300).Wait();
-            CurrentContentWrap.FindElement(By.XPath($"//section[contains(@style,\"flex\")]//input")).SendKeys(Answer.Replace('\n', '\t'));
+            int InteractionsLimit = 4;
+            int Interactions = 0;
+            while (Interactions++ < InteractionsLimit)
+            {
+                try
+                {
+                    CurrentContentWrap.FindElement(By.XPath($"//section[contains(@style,\"flex\")]//input")).SendKeys(Answer.Replace('\n', '\t'));
+                    return;
+                }
+                catch (NoSuchElementException)
+                {
+                    CurrentContentWrap.FindElement(By.XPath("//div[@class=\"input-text has-input\"]//input")).SendKeys(Answer.Replace('\n', '\t'));
+                    return;
+                } catch (ElementNotInteractableException) { }
+                Task.Delay(300).Wait();
+            }
         }
         private void RadioButtonHelper(string Answer)
         {
             var buttons = CurrentContentWrap.FindElements(By.XPath("//span"));
             foreach (IWebElement button in buttons)
             {
-                if (button.GetAttribute("innerHTML") == Answer)
+                if (DeleteBrackets(button.GetAttribute("innerHTML")) == Answer)
                 {
-                    ClickMultipleTimes(button, 4);
-                    return;
+                    if(ClickMultipleTimes(button, 4))
+                        return;
+                }
+            }
+            string PossibleAnswer;
+            foreach (IWebElement button in buttons)
+            {
+                try
+                {
+                    PossibleAnswer = button.GetAttribute("innerHTML")
+                    .Split('>')[1].Split('<')[0];
+                    if (PossibleAnswer == Answer)
+                    {
+                        if (ClickMultipleTimes(button, 4))
+                            return;
+                    }
+                }
+                catch { }
+            }
+            var ButtonsGroup = CurrentContentWrap.FindElements(By.XPath($"//section[@id=\"content_wrap_{ContentWrapID}\"]//div[@class=\"contentblock alignment-vertical\"]"));
+            List<string> SplittedAnswers = Answer.Split('\n').ToList();
+            foreach(IWebElement ButtonGroup in ButtonsGroup)
+            {
+                var RadioButtons = ButtonGroup.FindElements(By.XPath($"//section[@id=\"content_wrap_{ContentWrapID}\"]//span[@class=\"is-radiobutton-choice-text\"]"));
+                foreach(IWebElement RadioButton in RadioButtons)
+                {
+                    if (SplittedAnswers.Count != 0 && RadioButton.GetAttribute("innerHTML").Contains(SplittedAnswers[0]))
+                    {
+                        SplittedAnswers.RemoveAt(0);
+                        RadioButton.Click();
+                    }
                 }
             }
         }
@@ -404,8 +462,8 @@ namespace CambridgeOneSolver.Models
                 {
                     if (ComboBoxItem.GetAttribute("innerHTML") == SplittedAnswers[CurrentComboBox])
                     {
-                        ClickMultipleTimes(ComboBoxItem, 5);
-                        break;
+                        if(ClickMultipleTimes(ComboBoxItem, 5))
+                            break;
                     }
                 }
 
@@ -421,7 +479,7 @@ namespace CambridgeOneSolver.Models
             {
                 Task.Delay(250).Wait();
                 var DragAndDropItems = CurrentContentWrap.FindElements(By.XPath(
-                    $"//section[@id=\"content_wrap_{ContentWrapID}\"]//div[@class=\"pool ui-droppable\"]//div[@class=\"drag_holder\"]"));
+                    $"//section[@id=\"content_wrap_{ContentWrapID}\"]//div[contains(@class, \"pool ui-droppable\")]//div[@class=\"drag_holder\"]"));
 
                 for (int i = 0; i < DragAndDropItems.Count; i++)
                 {
@@ -439,9 +497,15 @@ namespace CambridgeOneSolver.Models
             string[] SplittedAnswers = Answer.Split('\n');
             var CheckBoxes = CurrentContentWrap.FindElements(By.XPath(
                 $"//section[@id=\"content_wrap_{ContentWrapID}\"]//span[@class=\"is-checkbox-choice-text\"]"));
+            if(CheckBoxes.Count == 0)
+            {
+                CheckBoxes = CurrentContentWrap.FindElements(By.XPath(
+                $"//section[@id=\"content_wrap_{ContentWrapID}\"]//span[@class=\"item\"]"));
+            }
+
             foreach (IWebElement CheckBox in CheckBoxes)
             {
-                if (SplittedAnswers.Contains(CheckBox.GetAttribute("innerHTML")))
+                if (SplittedAnswers.Contains(DeleteBrackets(CheckBox.GetAttribute("innerHTML"))))
                 {
                     ClickMultipleTimes(CheckBox, 4);
                 }
@@ -483,6 +547,11 @@ namespace CambridgeOneSolver.Models
                     InsideBrackets = false;
             }
             return result;
+        }
+        private string ReplaceToDumbSymbols(string str)
+        {
+            string NewStr = str.Replace('\'', '’');
+            return NewStr;
         }
     }
 }

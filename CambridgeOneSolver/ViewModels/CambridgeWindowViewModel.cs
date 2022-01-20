@@ -67,6 +67,15 @@ namespace CambridgeOneSolver.ViewModels
         }
         #endregion
 
+        #region Авто ввод
+        private bool _IsAutoFill = AppConstants.IsAutoFillEnabled;
+        public bool IsAutoFill
+        {
+            get => _IsAutoFill;
+            set => Set(ref _IsAutoFill, value);
+        }
+        #endregion
+
         #region Размер шрифта
 
         private int _AnswersFontSize = AppConstants.AnswersFontSize;
@@ -89,7 +98,8 @@ namespace CambridgeOneSolver.ViewModels
 
         private void OnCloseApplicationCommandExecuted(object p)
         {
-            driver.Close();
+            if (driver != null)
+                driver.Close();
             AppConstants.SaveData();
             Application.Current.Shutdown();
         }
@@ -121,9 +131,19 @@ namespace CambridgeOneSolver.ViewModels
                     if (sr.DisplayMessage != null)
                         MessageBox.Show(sr.DisplayMessage);
 
-                    DisplayAnswers(sr.Data);
-                    Thread thread = new Thread(() => driver.FillAnswersMachine(sr.Data, sr.TasksTag));
-                    thread.Start();
+                    if (sr.Data == null)
+                    {
+                        ErrorMessages.NoAnswersRecieved();
+                    }
+                    else
+                    {
+                        DisplayAnswers(sr.Data);
+                        if (_IsAutoFill)
+                        {
+                            Thread thread = new Thread(() => driver.FillAnswersMachine(sr.Data, sr.TasksTag));
+                            thread.Start();
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -170,7 +190,11 @@ namespace CambridgeOneSolver.ViewModels
 
         private void OnDeleteSavedDataCommandExecuted(object p)
         {
-            driver.Close();
+            try
+            {
+                driver.Close();
+            } catch { }
+            
             Process.Start(Application.ResourceAssembly.Location);
             AppConstants.Email = "";
             AppConstants.SaveData();
@@ -187,8 +211,7 @@ namespace CambridgeOneSolver.ViewModels
         #region Функции
         public void DisplayAnswers(string[] answers)
         {
-            LatestAnswers = answers;
-            if (answers.Length > 0)
+            if (answers != null)
             {
                 AnswersTable[] at = new AnswersTable[answers.Length];
 
@@ -213,7 +236,6 @@ namespace CambridgeOneSolver.ViewModels
         #endregion
 
         #region Для драйвера
-        public static string[] LatestAnswers { get; set; }
         private void OnInitialize()
         {
             driver = new DriverRework(MessageBox.Show);
