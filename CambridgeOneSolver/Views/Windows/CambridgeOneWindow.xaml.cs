@@ -41,7 +41,6 @@ namespace CambridgeOneSolver.Views.Windows
             if (AppConstants.FirstRun)
             {
                 AppConstants.FirstRun = false;
-                Application.Current.Shutdown();
             }
 
             if ((this.DataContext is CambridgeWindowViewModel vm) && (vm.ChangeThemeCommand.CanExecute(null)))

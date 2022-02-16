@@ -95,7 +95,6 @@ namespace CambridgeOneSolver.ViewModels
         #region Команды
         #region CloseApplicationCommand
         public ICommand CloseApplicationCommand { get; }
-
         private void OnCloseApplicationCommandExecuted(object p)
         {
             if (driver != null)
@@ -145,9 +144,8 @@ namespace CambridgeOneSolver.ViewModels
                         }
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    MessageBox.Show(ex.StackTrace, ex.Message);
                     ErrorMessages.ApiServerConnectionError();
                 }
             }

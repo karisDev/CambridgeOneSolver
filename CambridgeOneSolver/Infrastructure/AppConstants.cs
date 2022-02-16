@@ -20,6 +20,10 @@ namespace CambridgeOneSolver.Infrastructure
             Properties.Settings.Default.FirstRun = FirstRun;
             Properties.Settings.Default.Save();
         }
+        public void LocateOldSettings()
+        {
+            // to be done
+        }
         private static string GetApplicationVersion()
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();

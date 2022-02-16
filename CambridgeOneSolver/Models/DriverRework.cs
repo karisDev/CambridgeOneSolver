@@ -14,6 +14,7 @@ namespace CambridgeOneSolver.Models
         private readonly ChromeDriver driver;
         private readonly Func<string, MessageBoxResult> PrintErrorMessage;
         private bool IsRunning = false;
+        private bool IsFillingAnswers = false;
         private IWebElement CurrentContentWrap;
         private int ContentWrapID;
         public DriverRework(Func<string, MessageBoxResult> ErrorMessagesNotifier)
@@ -42,7 +43,10 @@ namespace CambridgeOneSolver.Models
         {
             Exception e = (Exception)args.ExceptionObject;
             PrintErrorMessage($"Была обнаружена неизвестная ошибка. Если хотите помочь исправить ее, то напишите в группу.\nТекст ошибки: {e.Message}\nStackTrace: {e.StackTrace}");
-            
+            while (true)
+            {
+                Task.Delay(10000000).Wait();
+            }
         }
         public void Close()
         {
@@ -213,6 +217,11 @@ namespace CambridgeOneSolver.Models
         }
         public void FillAnswersMachine(string[] AnswersArray, int[] TasksTag)
         {
+            if (IsFillingAnswers)
+                return;
+            else
+                IsFillingAnswers = true;
+
             string StartUrl = driver.Url;
             driver.SwitchTo().Frame(driver.FindElement(By.TagName("iframe")));
 
@@ -221,6 +230,7 @@ namespace CambridgeOneSolver.Models
             if (IsPresentation)
             {
                 SolvePresentation();
+                IsFillingAnswers = false;
                 return;
             }
 
@@ -254,6 +264,7 @@ namespace CambridgeOneSolver.Models
 
 
             driver.SwitchTo().DefaultContent();
+            IsFillingAnswers = false;
         }
         private bool CheckIfPresentation(int[] TasksTag)
         {
@@ -500,14 +511,24 @@ namespace CambridgeOneSolver.Models
             if(CheckBoxes.Count == 0)
             {
                 CheckBoxes = CurrentContentWrap.FindElements(By.XPath(
-                $"//section[@id=\"content_wrap_{ContentWrapID}\"]//span[@class=\"item\"]"));
+                    $"//section[@id=\"content_wrap_{ContentWrapID}\"]//span[@class=\"item\"]"));
             }
 
             foreach (IWebElement CheckBox in CheckBoxes)
             {
-                if (SplittedAnswers.Contains(DeleteBrackets(CheckBox.GetAttribute("innerHTML"))))
+                string ForDebug = DeleteBrackets(CheckBox.GetAttribute("innerHTML"));
+                if (SplittedAnswers.Contains(ForDebug))
                 {
-                    ClickMultipleTimes(CheckBox, 4);
+                    try
+                    {
+                        if (!CheckBox.FindElement(By.XPath("./ancestor::div[contains(@class,\"input-checkbox\")]//input")).Selected)
+                            ClickMultipleTimes(CheckBox, 4);
+                    }
+                    catch
+                    {
+                        ClickMultipleTimes(CheckBox, 4);
+                    }
+
                 }
             }
         }
@@ -546,7 +567,7 @@ namespace CambridgeOneSolver.Models
                 else if (i == '>')
                     InsideBrackets = false;
             }
-            return result;
+            return result.Replace("&nbsp;", " ");
         }
         private string ReplaceToDumbSymbols(string str)
         {
