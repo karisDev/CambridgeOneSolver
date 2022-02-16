@@ -40,14 +40,11 @@
                         Width="250"
                         Height="50"
                         FontSize="{Binding ElementName=AnswersGridFontSize, Path=Value}"
-                        Grid.Row="2"
                         Margin="5,5,0,0"
                         Text="Размер шрифта" />
                     <Slider
                         x:Name="AnswersGridFontSize"
                         Margin="15,0"
-                        Grid.Row="2"
-                        Grid.Column="1"
                         materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True"
                         Style="{StaticResource MaterialDesignDiscreteSlider}"
                         VerticalAlignment="Center"
@@ -61,16 +58,28 @@
                         IsSelectionRangeEnabled="True" />
                 </DockPanel>
                 <TextBlock
-                    Grid.Row="3"
                     FontSize="20"
-                    Text="Авто-логин" />
+                    Text="Автоматизация" />
                 <StackPanel Orientation="Horizontal">
                     <TextBlock
                         Width="250"
                         Margin="5,10"
                         FontSize="15"
                         TextWrapping="Wrap"
-                        Text="Стереть данные для авто-логина. Программа сама перезапустится" />
+                        Text="Авто-ввод ответов" />
+                    <ToggleButton
+                        x:Name="IsAutoFill"
+                        IsChecked="{Binding IsAutoFill}"
+                        Margin="15,0"
+                        HorizontalAlignment="Left" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Width="250"
+                        Margin="5,10"
+                        FontSize="15"
+                        TextWrapping="Wrap"
+                        Text="Стереть данные для авто-логина" />
                     <Button
                         Margin="10, 0"
                         Width="150"

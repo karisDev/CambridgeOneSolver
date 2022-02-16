@@ -35,6 +35,7 @@ namespace CambridgeOneSolver.Models
                         {
                             await manager.UpdateApp();
                             ReturnStatus("Новая версия готова к установке. Перезапустите приложение", false);
+                            MessageBox.Show("При перезапуске программы будет открыта новая версия");
                         }
                         catch
                         {
@@ -49,7 +50,7 @@ namespace CambridgeOneSolver.Models
             }
             catch
             {
-                ReturnStatus("Не удалось установить связь с GitHub", false);
+                ReturnStatus("Не удалось получить информацию о последней версии", false);
             }
 
         }

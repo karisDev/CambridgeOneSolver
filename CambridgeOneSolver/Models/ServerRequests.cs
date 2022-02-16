@@ -13,6 +13,8 @@ namespace CambridgeOneSolver.Models
         #region Json properties
         [JsonProperty("data")]
         public string[] Data { get; set; }
+        [JsonProperty("tasksTag")]
+        public int[] TasksTag { get; set; }
         [JsonProperty("accountStatus")]
         public string AccountStatus { get; set; }
         [JsonProperty("displayMessage")]
@@ -32,7 +34,7 @@ namespace CambridgeOneSolver.Models
          * С ее помощью можно узнать следущие инсайды аудитории программы:
          * Общее число пользователей, соотношение по курсам, среднее количество выполненных тестов.
          * Более того, некоторые пользователи не из МИСиС
-         * Никакая из почт не будет передана кому-либо. Даже я сам не открываю этот файл напрямую для просмотра
+         * Никакая из почт не будет передана кому-либо. Даже я сам не открываю эту базу напрямую для просмотра
          */
         public static async Task<ServerRequests> Asnwers(string DataLink, string Email, string Version)
         {
