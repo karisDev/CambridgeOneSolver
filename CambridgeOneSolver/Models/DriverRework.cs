@@ -569,10 +569,5 @@ namespace CambridgeOneSolver.Models
             }
             return result.Replace("&nbsp;", " ");
         }
-        private string ReplaceToDumbSymbols(string str)
-        {
-            string NewStr = str.Replace('\'', '’');
-            return NewStr;
-        }
     }
 }
