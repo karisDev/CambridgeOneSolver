@@ -29,13 +29,13 @@
             CornerRadius="0"
             GlassFrameThickness="1" />
     </WindowChrome.WindowChrome>
+    <Window.DataContext>
+        <vm:CambridgeWindowViewModel />
+    </Window.DataContext>
     <!--
         Initialized="OnInitialized"
         Closed="OnClosed"
     -->
-    <Window.DataContext>
-        <vm:CambridgeWindowViewModel />
-    </Window.DataContext>
     <Grid Margin="10, 5, 10, 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />

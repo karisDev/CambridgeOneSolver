@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CambridgeOneSolver.Infrastructure;
 using System.Windows;
+using System.Diagnostics;
 
 namespace CambridgeOneSolver.Models
 {
@@ -31,10 +32,9 @@ namespace CambridgeOneSolver.Models
                 {
                     Url = "https://www.cambridgeone.org/login"
                 };
-
                 IsRunning = true;
             }
-            catch (DriverServiceNotFoundException)
+            catch
             {
                 PrintErrorMessage("Произошел конфликт с версией браузера Google Chrome. Если у вас последняя версия браузера - сообщите в группу.");
             }
@@ -84,9 +84,8 @@ namespace CambridgeOneSolver.Models
             {
                 return false;
             }
-
         }
-        private bool ClickMultipleTimes(string xpath, int IterationLimit = 9999)
+        private bool ClickMultipleTimes(string xpath, int IterationLimit = 99)
         {
             int Iterations = 0;
             while (++Iterations < IterationLimit)
@@ -106,8 +105,8 @@ namespace CambridgeOneSolver.Models
                     }
                     else
                     {
-                        PrintErrorMessage($"Неизвестная ошибка при попытке нажать на \"{xpath}\". Скорее всего кнопки нет на экране или ответы не совпадают.");
-                        return false; ;
+                        PrintErrorMessage($"Неизвестная ошибка при попытке нажать на \"{xpath}\". { ex.Message }");
+                        return false;
                     }
                 }
             }
@@ -328,8 +327,10 @@ namespace CambridgeOneSolver.Models
 
             if (WaitForElement(CheckButtonXPath, 10))
             {
-                ClickMultipleTimes(CheckButtonXPath);
-                ClickMultipleTimes(NextButtonXPath);
+                Debug.WriteLine("Pushing check button");
+                ClickMultipleTimes(CheckButtonXPath, 2);
+                Debug.WriteLine("Pushing next button");
+                ClickMultipleTimes(NextButtonXPath, 2);
             }
             else if (WaitForElement(NextButtonXPath, 10))
             {
@@ -353,6 +354,7 @@ namespace CambridgeOneSolver.Models
          */
         private void SolveTaskByTag(string Answer, int TaskTag)
         {
+            Debug.WriteLine($"Entering {Answer} of type {TaskTag}.");
             switch (TaskTag)
             {
                 case 0:
@@ -386,6 +388,7 @@ namespace CambridgeOneSolver.Models
                     PrintErrorMessage("Задание выполняется вручную. Так как все работает в цикле это окно не закроется пока вы не перейдете к след. заданию.");
                     break;
             }
+            Debug.WriteLine("Iteration ended.");
         }
         private void TextGapHelper(string Answer)
         {

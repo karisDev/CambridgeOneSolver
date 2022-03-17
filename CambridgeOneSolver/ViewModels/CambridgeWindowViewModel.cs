@@ -90,6 +90,15 @@ namespace CambridgeOneSolver.ViewModels
         }
 
         #endregion
+
+        #region Спрятать окно
+        private bool _WindowHidden = false;
+        public bool WindowHidden
+        {
+            get => _WindowHidden;
+            set => Set(ref _WindowHidden, value);
+        }
+        #endregion
         #endregion
 
         #region Команды
@@ -118,17 +127,19 @@ namespace CambridgeOneSolver.ViewModels
         public ICommand RequestAnswersCommand { get; }
         private async void OnRequestAnswersCommandExecuted(object p)
         {
-            LoadingAnswers = true;
             string DataLink = driver.RetrieveDataLink();
             if (DataLink == null)
                 ErrorMessages.NoDataURL();
             else
             {
+                LoadingAnswers = true;
                 try
                 {
                     ServerRequests sr = await ServerRequests.Asnwers(DataLink, AppConstants.Email, AppConstants.Version);
                     if (sr.DisplayMessage != null)
+                    {
                         MessageBox.Show(sr.DisplayMessage);
+                    }
 
                     if (sr.Data == null)
                     {
@@ -237,7 +248,7 @@ namespace CambridgeOneSolver.ViewModels
         private void OnInitialize()
         {
             driver = new DriverRework(MessageBox.Show);
-            
+
             if (AppConstants.Email != "" || AppConstants.Email == null)
             {
                 driver.FillLoginPage();

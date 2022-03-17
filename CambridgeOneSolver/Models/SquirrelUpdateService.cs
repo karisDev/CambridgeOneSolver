@@ -33,6 +33,7 @@ namespace CambridgeOneSolver.Models
                     {
                         try
                         {
+                            MessageBox.Show("Происходит загрузка новой версии");
                             await manager.UpdateApp();
                             ReturnStatus("Новая версия готова к установке. Перезапустите приложение", false);
                             MessageBox.Show("При перезапуске программы будет открыта новая версия");
