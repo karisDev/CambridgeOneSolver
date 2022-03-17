@@ -92,7 +92,8 @@ namespace CambridgeOneSolver.Models
             {
                 try
                 {
-                    driver.FindElement(By.XPath(xpath)).Click();
+                    var button = driver.FindElement(By.XPath(xpath));
+                    button.Click();
                     return true;
                 }
                 catch (Exception ex)
@@ -354,7 +355,6 @@ namespace CambridgeOneSolver.Models
          */
         private void SolveTaskByTag(string Answer, int TaskTag)
         {
-            Debug.WriteLine($"Entering {Answer} of type {TaskTag}.");
             switch (TaskTag)
             {
                 case 0:
@@ -388,7 +388,6 @@ namespace CambridgeOneSolver.Models
                     PrintErrorMessage("Задание выполняется вручную. Так как все работает в цикле это окно не закроется пока вы не перейдете к след. заданию.");
                     break;
             }
-            Debug.WriteLine("Iteration ended.");
         }
         private void TextGapHelper(string Answer)
         {
