@@ -90,15 +90,6 @@ namespace CambridgeOneSolver.ViewModels
         }
 
         #endregion
-
-        #region Спрятать окно
-        private bool _WindowHidden = false;
-        public bool WindowHidden
-        {
-            get => _WindowHidden;
-            set => Set(ref _WindowHidden, value);
-        }
-        #endregion
         #endregion
 
         #region Команды
@@ -127,19 +118,17 @@ namespace CambridgeOneSolver.ViewModels
         public ICommand RequestAnswersCommand { get; }
         private async void OnRequestAnswersCommandExecuted(object p)
         {
+            LoadingAnswers = true;
             string DataLink = driver.RetrieveDataLink();
             if (DataLink == null)
                 ErrorMessages.NoDataURL();
             else
             {
-                LoadingAnswers = true;
                 try
                 {
                     ServerRequests sr = await ServerRequests.Asnwers(DataLink, AppConstants.Email, AppConstants.Version);
                     if (sr.DisplayMessage != null)
-                    {
                         MessageBox.Show(sr.DisplayMessage);
-                    }
 
                     if (sr.Data == null)
                     {
@@ -173,12 +162,13 @@ namespace CambridgeOneSolver.ViewModels
         private void OnChangeThemeCommandExecuted(object p)
         {
             ApplyThemeColor(IsThemeDark);
-/*            Infrastructure.AppConstants.IsThemeDark = !Infrastructure.AppConstants.IsThemeDark;
-            ITheme theme = _paletteHelper.GetTheme();
-            IBaseTheme baseTheme = Infrastructure.AppConstants.IsThemeDark ? new MaterialDesignDarkTheme() : (IBaseTheme)new MaterialDesignLightTheme();
-            theme.SetBaseTheme(baseTheme);
-            _paletteHelper.SetTheme(theme);
-*/        }
+            /*            Infrastructure.AppConstants.IsThemeDark = !Infrastructure.AppConstants.IsThemeDark;
+                        ITheme theme = _paletteHelper.GetTheme();
+                        IBaseTheme baseTheme = Infrastructure.AppConstants.IsThemeDark ? new MaterialDesignDarkTheme() : (IBaseTheme)new MaterialDesignLightTheme();
+                        theme.SetBaseTheme(baseTheme);
+                        _paletteHelper.SetTheme(theme);
+            */
+        }
         private bool CanChangeThemeCommandExecute(object p) => true;
         #endregion
 
@@ -202,8 +192,9 @@ namespace CambridgeOneSolver.ViewModels
             try
             {
                 driver.Close();
-            } catch { }
-            
+            }
+            catch { }
+
             Process.Start(Application.ResourceAssembly.Location);
             AppConstants.Email = "";
             AppConstants.SaveData();
@@ -249,14 +240,14 @@ namespace CambridgeOneSolver.ViewModels
         {
             driver = new DriverRework(MessageBox.Show);
 
-            if (AppConstants.Email != "" || AppConstants.Email == null)
+/*            if (AppConstants.Email != "" || AppConstants.Email == null)
             {
                 driver.FillLoginPage();
             }
             else
             {
                 driver.DetectLoginPage();
-            }
+            }*/
         }
         #endregion
         public CambridgeWindowViewModel()

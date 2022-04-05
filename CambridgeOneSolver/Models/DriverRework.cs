@@ -1,18 +1,18 @@
 ﻿using System;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CambridgeOneSolver.Infrastructure;
 using System.Windows;
-using System.Diagnostics;
 
 namespace CambridgeOneSolver.Models
 {
     class DriverRework
     {
-        private readonly ChromeDriver driver;
+        private readonly FirefoxDriver driver;
         private readonly Func<string, MessageBoxResult> PrintErrorMessage;
         private bool IsRunning = false;
         private bool IsFillingAnswers = false;
@@ -24,17 +24,18 @@ namespace CambridgeOneSolver.Models
             AppDomain appDomain = AppDomain.CurrentDomain;
             appDomain.UnhandledException += new UnhandledExceptionEventHandler(ErrorHandler);
 
-            var driverService = ChromeDriverService.CreateDefaultService();
+            var driverService = FirefoxDriverService.CreateDefaultService();
             driverService.HideCommandPromptWindow = true;
             try
             {
-                driver = new ChromeDriver(driverService, new ChromeOptions())
+                driver = new FirefoxDriver(driverService, new FirefoxOptions())
                 {
                     Url = "https://www.cambridgeone.org/login"
                 };
+
                 IsRunning = true;
             }
-            catch
+            catch (DriverServiceNotFoundException)
             {
                 PrintErrorMessage("Произошел конфликт с версией браузера Google Chrome. Если у вас последняя версия браузера - сообщите в группу.");
             }
@@ -54,7 +55,8 @@ namespace CambridgeOneSolver.Models
             {
                 driver.Quit();
                 IsRunning = false;
-            } catch { } // бывает webdriver exception, но на всякий пусть при любой ошибке обрабатывает
+            }
+            catch { } // бывает webdriver exception, но на всякий пусть при любой ошибке обрабатывает
         }
         private bool WaitForElement(string xpath, int IterationLimit = 9999) // ожидание Limit * 0.1 секунд
         {
@@ -84,16 +86,16 @@ namespace CambridgeOneSolver.Models
             {
                 return false;
             }
+
         }
-        private bool ClickMultipleTimes(string xpath, int IterationLimit = 99)
+        private bool ClickMultipleTimes(string xpath, int IterationLimit = 9999)
         {
             int Iterations = 0;
             while (++Iterations < IterationLimit)
             {
                 try
                 {
-                    var button = driver.FindElement(By.XPath(xpath));
-                    button.Click();
+                    driver.FindElement(By.XPath(xpath)).Click();
                     return true;
                 }
                 catch (Exception ex)
@@ -106,8 +108,8 @@ namespace CambridgeOneSolver.Models
                     }
                     else
                     {
-                        PrintErrorMessage($"Неизвестная ошибка при попытке нажать на \"{xpath}\". { ex.Message }");
-                        return false;
+                        PrintErrorMessage($"Неизвестная ошибка при попытке нажать на \"{xpath}\". Скорее всего кнопки нет на экране или ответы не совпадают.");
+                        return false; ;
                     }
                 }
             }
@@ -257,7 +259,8 @@ namespace CambridgeOneSolver.Models
                     {
                         SolveTaskByTag(AnswersArray[ContentWrapID], TasksTag[ContentWrapID]);
                     }
-                } catch (NoSuchWindowException) { }
+                }
+                catch (NoSuchWindowException) { }
 
 
             } while (ContentWrapID != TasksTag.Length - 1 && StartUrl == driver.Url);
@@ -328,10 +331,8 @@ namespace CambridgeOneSolver.Models
 
             if (WaitForElement(CheckButtonXPath, 10))
             {
-                Debug.WriteLine("Pushing check button");
-                ClickMultipleTimes(CheckButtonXPath, 2);
-                Debug.WriteLine("Pushing next button");
-                ClickMultipleTimes(NextButtonXPath, 2);
+                ClickMultipleTimes(CheckButtonXPath);
+                ClickMultipleTimes(NextButtonXPath);
             }
             else if (WaitForElement(NextButtonXPath, 10))
             {
@@ -404,7 +405,8 @@ namespace CambridgeOneSolver.Models
                 {
                     CurrentContentWrap.FindElement(By.XPath("//div[@class=\"input-text has-input\"]//input")).SendKeys(Answer.Replace('\n', '\t'));
                     return;
-                } catch (ElementNotInteractableException) { }
+                }
+                catch (ElementNotInteractableException) { }
                 Task.Delay(300).Wait();
             }
         }
@@ -415,7 +417,7 @@ namespace CambridgeOneSolver.Models
             {
                 if (DeleteBrackets(button.GetAttribute("innerHTML")) == Answer)
                 {
-                    if(ClickMultipleTimes(button, 4))
+                    if (ClickMultipleTimes(button, 4))
                         return;
                 }
             }
@@ -436,10 +438,10 @@ namespace CambridgeOneSolver.Models
             }
             var ButtonsGroup = CurrentContentWrap.FindElements(By.XPath($"//section[@id=\"content_wrap_{ContentWrapID}\"]//div[@class=\"contentblock alignment-vertical\"]"));
             List<string> SplittedAnswers = Answer.Split('\n').ToList();
-            foreach(IWebElement ButtonGroup in ButtonsGroup)
+            foreach (IWebElement ButtonGroup in ButtonsGroup)
             {
                 var RadioButtons = ButtonGroup.FindElements(By.XPath($"//section[@id=\"content_wrap_{ContentWrapID}\"]//span[@class=\"is-radiobutton-choice-text\"]"));
-                foreach(IWebElement RadioButton in RadioButtons)
+                foreach (IWebElement RadioButton in RadioButtons)
                 {
                     if (SplittedAnswers.Count != 0 && RadioButton.GetAttribute("innerHTML").Contains(SplittedAnswers[0]))
                     {
@@ -475,7 +477,7 @@ namespace CambridgeOneSolver.Models
                 {
                     if (ComboBoxItem.GetAttribute("innerHTML") == SplittedAnswers[CurrentComboBox])
                     {
-                        if(ClickMultipleTimes(ComboBoxItem, 5))
+                        if (ClickMultipleTimes(ComboBoxItem, 5))
                             break;
                     }
                 }
@@ -510,7 +512,7 @@ namespace CambridgeOneSolver.Models
             string[] SplittedAnswers = Answer.Split('\n');
             var CheckBoxes = CurrentContentWrap.FindElements(By.XPath(
                 $"//section[@id=\"content_wrap_{ContentWrapID}\"]//span[@class=\"is-checkbox-choice-text\"]"));
-            if(CheckBoxes.Count == 0)
+            if (CheckBoxes.Count == 0)
             {
                 CheckBoxes = CurrentContentWrap.FindElements(By.XPath(
                     $"//section[@id=\"content_wrap_{ContentWrapID}\"]//span[@class=\"item\"]"));
