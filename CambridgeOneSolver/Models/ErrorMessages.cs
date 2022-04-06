@@ -12,6 +12,5 @@ namespace CambridgeOneSolver.Models
         public static void NoValidQuizzes() => sendMessage("В этом тесте нет вопросов с выбором ответа.");
         public static void NoAnswersRecieved() => sendMessage("Не удалось получить ответы для этого теста.");
         public static void ApiServerConnectionError() => sendMessage("Сервер недоступен. Напишите в группу.");
-
     }
 }

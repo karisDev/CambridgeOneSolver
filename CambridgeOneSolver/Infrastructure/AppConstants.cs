@@ -6,7 +6,6 @@ namespace CambridgeOneSolver.Infrastructure
     {
         public readonly static string Version = GetApplicationVersion();
         public static string Email = Properties.Settings.Default.Email;
-        public static string Password = Properties.Settings.Default.Password;
         public static bool IsThemeDark = Properties.Settings.Default.IsThemeDark;
         public static int AnswersFontSize = Properties.Settings.Default.AnswersFontSize;
         public static bool FirstRun = Properties.Settings.Default.FirstRun;
@@ -14,7 +13,6 @@ namespace CambridgeOneSolver.Infrastructure
         public static void SaveData()
         {
             Properties.Settings.Default.Email = Email;
-            Properties.Settings.Default.Password = Password;
             Properties.Settings.Default.IsThemeDark = IsThemeDark;
             Properties.Settings.Default.AnswersFontSize = AnswersFontSize;
             Properties.Settings.Default.FirstRun = FirstRun;
@@ -27,8 +25,8 @@ namespace CambridgeOneSolver.Infrastructure
         private static string GetApplicationVersion()
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            FileVersionInfo vi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return vi.FileVersion;
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            return fvi.FileVersion;
         }
     }
 }

@@ -40,10 +40,11 @@ namespace CambridgeOneSolver.Views.UserControls
                     AddNewCard(messageText[i], messageDate[i]);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                AddNewCard("Если вы это видите, значит у нас упал сервер :c", "Или интернет не работает");
+                AddNewCard(ex.Message, "Или интернет не работает");
             }
+            //AddNewCard("Если вы это видите, значит у нас упал сервер :c", "Или интернет не работает");
 
         }
         void AddNewCard(string MessageText, string DateText)

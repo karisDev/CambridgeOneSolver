@@ -1,6 +1,8 @@
 ﻿using CambridgeOneSolver.Infrastructure;
 using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -39,16 +41,26 @@ namespace CambridgeOneSolver.Models
         public static async Task<ServerRequests> Asnwers(string DataLink, string Email, string Version)
         {
             string request = ServerURL + $"?responseType=getTasks&link={DataLink}&email={Email}&version={Version}";
-            var client = new HttpClient();
-            var result = await client.GetStringAsync(request);
+            var result = await GetAsync(request);
             return JsonConvert.DeserializeObject<ServerRequests>(result);
         }
         public static async Task<ServerRequests> Donators(string Email, string Version)
         {
             string request = ServerURL + $"?responseType=getDonators&email={Email}&version={Version}";
-            var client = new HttpClient();
-            var result = await client.GetStringAsync(request);
+            var result = await GetAsync(request);
             return JsonConvert.DeserializeObject<ServerRequests>(result);
+        }
+        public static async Task<string> GetAsync(string uri)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return await reader.ReadToEndAsync();
+            }
         }
     }
 }

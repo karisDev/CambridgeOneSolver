@@ -12,7 +12,7 @@ namespace CambridgeOneSolver.Models
 {
     class DriverRework
     {
-        private readonly FirefoxDriver driver;
+        private readonly ChromeDriver driver;
         private readonly Func<string, MessageBoxResult> PrintErrorMessage;
         private bool IsRunning = false;
         private bool IsFillingAnswers = false;
@@ -24,11 +24,15 @@ namespace CambridgeOneSolver.Models
             AppDomain appDomain = AppDomain.CurrentDomain;
             appDomain.UnhandledException += new UnhandledExceptionEventHandler(ErrorHandler);
 
-            var driverService = FirefoxDriverService.CreateDefaultService();
+            var driverService = ChromeDriverService.CreateDefaultService();
             driverService.HideCommandPromptWindow = true;
+            var chromeOptions = new ChromeOptions
+            {
+                PageLoadStrategy = PageLoadStrategy.None
+            };
             try
             {
-                driver = new FirefoxDriver(driverService, new FirefoxOptions())
+                driver = new ChromeDriver(driverService, chromeOptions)
                 {
                     Url = "https://www.cambridgeone.org/login"
                 };
@@ -38,6 +42,10 @@ namespace CambridgeOneSolver.Models
             catch (DriverServiceNotFoundException)
             {
                 PrintErrorMessage("Произошел конфликт с версией браузера Google Chrome. Если у вас последняя версия браузера - сообщите в группу.");
+            }
+            catch (WebDriverException)
+            {
+                PrintErrorMessage("Данная программа поддерживает только 100 версию Chrome. Либо нам нужно обновиться, либо вам.");
             }
         }
         private void ErrorHandler(object sender, UnhandledExceptionEventArgs args)
@@ -108,7 +116,7 @@ namespace CambridgeOneSolver.Models
                     }
                     else
                     {
-                        PrintErrorMessage($"Неизвестная ошибка при попытке нажать на \"{xpath}\". Скорее всего кнопки нет на экране или ответы не совпадают.");
+                        PrintErrorMessage($"Неизвестная ошибка при попытке нажать на \"{xpath}\". Скорее всего вы закрыли окно или ответы не совпадают.");
                         return false; ;
                     }
                 }
@@ -202,10 +210,9 @@ namespace CambridgeOneSolver.Models
                 try
                 {
                     AppConstants.Email = driver.FindElement(By.XPath("//input[@id=\"gigya-loginID-56269462240752180\"]")).GetAttribute("value");
-                    AppConstants.Password = driver.FindElement(By.XPath("//input[@id=\"gigya-password-56383998600152700\"]")).GetAttribute("value");
                 }
                 catch { }
-                await Task.Delay(400);
+                await Task.Delay(1000);
             }
         }
         public void FillLoginPage()
@@ -213,7 +220,6 @@ namespace CambridgeOneSolver.Models
             if (WaitForElement("//*[@id=\"gigya-loginID-56269462240752180\"]"))
             {
                 driver.FindElement(By.Id("gigya-loginID-56269462240752180")).SendKeys(AppConstants.Email);
-                driver.FindElement(By.Id("gigya-password-56383998600152700")).SendKeys(AppConstants.Password);
                 driver.FindElement(By.XPath("//input[@value=\"Log in\"]")).Click();
             }
         }

@@ -162,12 +162,6 @@ namespace CambridgeOneSolver.ViewModels
         private void OnChangeThemeCommandExecuted(object p)
         {
             ApplyThemeColor(IsThemeDark);
-            /*            Infrastructure.AppConstants.IsThemeDark = !Infrastructure.AppConstants.IsThemeDark;
-                        ITheme theme = _paletteHelper.GetTheme();
-                        IBaseTheme baseTheme = Infrastructure.AppConstants.IsThemeDark ? new MaterialDesignDarkTheme() : (IBaseTheme)new MaterialDesignLightTheme();
-                        theme.SetBaseTheme(baseTheme);
-                        _paletteHelper.SetTheme(theme);
-            */
         }
         private bool CanChangeThemeCommandExecute(object p) => true;
         #endregion
@@ -240,14 +234,7 @@ namespace CambridgeOneSolver.ViewModels
         {
             driver = new DriverRework(MessageBox.Show);
 
-/*            if (AppConstants.Email != "" || AppConstants.Email == null)
-            {
-                driver.FillLoginPage();
-            }
-            else
-            {
-                driver.DetectLoginPage();
-            }*/
+            driver.DetectLoginPage();
         }
         #endregion
         public CambridgeWindowViewModel()
