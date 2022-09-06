@@ -123,7 +123,7 @@ namespace CambridgeOneSolver.Models
             }
             return false;
         }
-        private bool ClickMultipleTimes(IWebElement button, int IterationLimit = 9999)
+        private bool ClickMultipleTimes(IWebElement button, int IterationLimit = 9999) // 1 итерация: +0.1 секунд
         {
             int Iterations = 0;
             while (++Iterations < IterationLimit)
@@ -423,7 +423,7 @@ namespace CambridgeOneSolver.Models
             {
                 if (DeleteBrackets(button.GetAttribute("innerHTML")) == Answer)
                 {
-                    if (ClickMultipleTimes(button, 4))
+                    if (ClickMultipleTimes(button, 2))
                         return;
                 }
             }

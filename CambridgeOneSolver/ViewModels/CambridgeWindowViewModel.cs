@@ -173,7 +173,10 @@ namespace CambridgeOneSolver.ViewModels
         private void OnVisitBuyPageCommandExecuted(object p)
         {
             IsOnTop = false;
-            System.Diagnostics.Process.Start("https://sobe.ru/na/cambridgeonesolver");
+            // 5469 3800 6495 1923
+            MessageBox.Show("После закрытия окна будет скопирован номер карты 'Сбер'. Сообщение указанное при донате окажется в списке выше. Огромное спасибо за поддержку!");
+            Clipboard.SetText("5469 3800 6495 1923");
+            //System.Diagnostics.Process.Start("https://sobe.ru/na/cambridgeonesolver");
         }
         private bool CanVisitBuyPageCommandExecute(object p) => true;
         #endregion

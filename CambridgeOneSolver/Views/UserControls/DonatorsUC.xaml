@@ -37,6 +37,6 @@
             Content="Оказаться в списке"
             Width="170"
             Command="{Binding VisitBuyPageCommand}"
-            Grid.Row="2"/>
+            Grid.Row="2" />
     </Grid>
 </UserControl>
